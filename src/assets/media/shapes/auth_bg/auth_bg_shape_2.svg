@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" width="864.51" height="839.027" viewBox="0 0 864.51 839.027">
+  <defs>
+    <linearGradient id="linear-gradient" x1="0.5" x2="0.5" y2="1" gradientUnits="objectBoundingBox">
+      <stop offset="0" stop-color="#cee2be"/>
+      <stop offset="1" stop-color="#def2d2"/>
+    </linearGradient>
+    <clipPath id="clip-path">
+      <path id="Path_60626" data-name="Path 60626" d="M926.5,651.5Q862,803,718,860.5T412.5,925q-161.5,7-235-137t-80-290.5Q91,351,189.5,242t243-143Q577,65,730,122T937,339.5Q991,500,926.5,651.5Z" fill="url(#linear-gradient)"/>
+    </clipPath>
+  </defs>
+  <g id="auth_bg_shape_2" transform="translate(-97.098 -86.297)" clip-path="url(#clip-path)">
+    <path id="Path_60625" data-name="Path 60625" d="M926.5,651.5Q862,803,718,860.5T412.5,925q-161.5,7-235-137t-80-290.5Q91,351,189.5,242t243-143Q577,65,730,122T937,339.5Q991,500,926.5,651.5Z" fill="url(#linear-gradient)"/>
+  </g>
+</svg>
