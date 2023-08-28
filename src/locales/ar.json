@@ -382,7 +382,9 @@
     "new": "جديد",
     "confirmed": " تم تأكيد الطلب",
     "Processing_in_progress": "جاري التجهيز",
-    "all": "الكل"
+    "all": "الكل",
+    "isAvailable": "متاح",
+    "is_not_Available": "غير متاح"
   },
 
   "CHARTS": {
@@ -620,7 +622,8 @@
     "mobileNumber": "رقم الجوال",
     "phoneNumber": "رقم الهاتف",
     "secondPhone": "رقم هاتف اخر",
-    "password": "كلمة المرور",
+    "password": "كلمة المرور ",
+    "new_password": "كلمة المرور الجديدة",
     "confirmPassword": "تأكيد كلمة المرور",
     "phone": "رقم الجوال",
     "userName": "إسم المستخدم",
@@ -805,7 +808,27 @@
 
     "change_status": "تغيير الحالة",
     "individual": "فردي",
-    "store": "مؤسسة"
+    "store": "مؤسسة",
+    "equipments": "معدات",
+    "el_equipments": "المعدات",
+    "transport": "توصيل",
+    "equipment_image": "صورة المعدة",
+    "equipment_name": "اسم المعدة",
+    "Available_number": "العدد المتاح",
+    "equipment_cost": "تكلفة المعدة",
+    "ownerName": "مالك المعدة",
+    "add_equipment": "اضافة معدة",
+    "edit_equipment": "تعديل المعدة",
+    "show_equipment": "عرض المعدة",
+    "transportType": "نوع النقل",
+    "is_transport": "تدعم النقل",
+
+    "contact_us": "تواصل معنا",
+    "content": "المحتوي",
+    "old_password": "كلمة المرور القديمة",
+    "is_paymentStatus": "تقبل الدفعات",
+    "min_payment": "اقل قيمة دفعة",
+    "day_payment": "الفتره بين الدفعات"
   },
 
   "VALIDATION": {
@@ -816,6 +839,7 @@
     "email_domain": "يجب أن يحتوي البريد الإلكتروني على .com/.net",
     "missingAtSymbol": "missingAtSymbol",
     "password": "حقل كلمة المرور لايمكن ان يكون فارغ",
+    "old_password": "حقل كلمة المرور القديمة لايمكن ان يكون فارغ",
     "passwordLength": "كلمة المرور يجب ان تتكون على الاقل من 6 خانات",
     "mobileNumber": "حقل رقم الجوال لايمكن ان يكون فارغ",
     "phoneNumber": "حقل رقم الهاتف لايمكن ان يكون فارغ",

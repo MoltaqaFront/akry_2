@@ -20,6 +20,25 @@ import AppContentWrapper from "../pages/AppContentWrapper.vue";
 import HomePage from "../pages/HomePage.vue";
 // ============== End:: Home Page Route
 
+// ============== Start:: Equipments Routes
+import EquipmentsHome from "../views/Cruds/Equipments/Home.vue";
+import AllEquipments from "../views/Cruds/Equipments/ShowAll.vue";
+import ShowEquipments from "../views/Cruds/Equipments/Show.vue";
+import CreateEquipments from "../views/Cruds/Equipments/Create.vue";
+// ============== End:: Equipments Routes
+
+// ============== Start:: Transport Routes
+import TransportHome from "../views/Cruds/Transport/Home.vue";
+import AllTransport from "../views/Cruds/Transport/ShowAll.vue";
+import ShowTransport from "../views/Cruds/Transport/Show.vue";
+import CreateTransport from "../views/Cruds/Transport/Create.vue";
+// ============== End:: Transport Routes
+
+// ============== Start:: Contact Routes
+import ContactHome from "../views/Cruds/Contact/Home.vue";
+import CreateContact from "../views/Cruds/Contact/Create.vue";
+// ============== End:: Contact Routes
+
 // ============== Start:: Forbidden Route
 import ForbiddenPage from "../pages/ForbiddenPage.vue";
 // ============== End:: Forbidden Route
@@ -90,35 +109,104 @@ const routes = [
       },
       // End:: Home Route Config
 
-      // Start:: Clients Routes Config
-      // {
-      //   path: "/clients",
-      //   name: "ClientsHome",
-      //   component: ClientsHome,
-      //   meta: {
-      //     middleware: [auth],
-      //   },
-      //   children: [
-      //     {
-      //       path: "all",
-      //       name: "AllClients",
-      //       component: AllClients,
-      //       meta: {
-      //         middleware: [auth],
-      //       },
-      //     },
-      //     {
-      //       path: "show/:id",
-      //       name: "ShowClient",
-      //       component: ShowClient,
-      //       props: true,
-      //       meta: {
-      //         middleware: [auth],
-      //       },
-      //     },
-      //   ],
-      // },
-      // End:: Clients Routes Config
+      // Start:: Equipments Routes Config
+      {
+        path: "/equipments",
+        name: "EquipmentsHome",
+        component: EquipmentsHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllEquipments",
+            component: AllEquipments,
+            meta: {
+              middleware: [auth],
+            },
+          },
+          {
+            path: "create",
+            name: "CreateEquipments",
+            component: CreateEquipments,
+            props: true,
+            meta: {
+              middleware: [auth],
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowEquipments",
+            component: ShowEquipments,
+            props: true,
+            meta: {
+              middleware: [auth],
+            },
+          },
+        ],
+      },
+      // End:: Equipments Routes Config
+
+      // Start:: Transport Routes Config
+      {
+        path: "/transport",
+        name: "TransportHome",
+        component: TransportHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "all",
+            name: "AllTransport",
+            component: AllTransport,
+            meta: {
+              middleware: [auth],
+            },
+          },
+          {
+            path: "create",
+            name: "CreateTransport",
+            component: CreateTransport,
+            props: true,
+            meta: {
+              middleware: [auth],
+            },
+          },
+          {
+            path: "show/:id",
+            name: "ShowTransport",
+            component: ShowTransport,
+            props: true,
+            meta: {
+              middleware: [auth],
+            },
+          },
+        ],
+      },
+      // End:: Transport Routes Config
+
+      // Start:: contact Routes Config
+      {
+        path: "/contact",
+        name: "ContactHome",
+        component: ContactHome,
+        meta: {
+          middleware: [auth],
+        },
+        children: [
+          {
+            path: "create",
+            name: "CreateContact",
+            component: CreateContact,
+            meta: {
+              middleware: [auth],
+            },
+          },
+        ],
+      },
+      // End:: contact Routes Config
     ],
   },
   // ***************** End:: Content Routes Config

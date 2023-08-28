@@ -21,6 +21,7 @@
     "izitoast": "^1.4.0",
     "laravel-echo": "^1.11.4",
     "popper.js": "^1.16.1",
+    "pusher-js": "^8.3.0",
     "register-service-worker": "^1.7.1",
     "socket.io-client": "^2.4.0",
     "vue": "^2.6.11",

@@ -8,14 +8,8 @@
           <form @submit.prevent="validateFormInputs">
             <div class="row">
               <!-- Start:: Image Upload Input -->
-              <base-image-upload-input
-                col="12"
-                identifier="admin_image"
-                :preSelectedImage="data.image.path"
-                :placeholder="$t('PLACEHOLDERS.personalImage')"
-                @selectImage="selectImage"
-                required
-              />
+              <base-image-upload-input col="12" identifier="admin_image" :preSelectedImage="data.image.path"
+                :placeholder="$t('PLACEHOLDERS.personalImage')" @selectImage="selectImage" required />
               <!-- End:: Image Upload Input -->
 
               <!-- Start:: Name Input -->
@@ -36,8 +30,14 @@
               <Transition name="fadeInUp" mode="out-in">
                 <div class="col-12" v-if="data.enableEditPassword">
                   <div class="row">
+
                     <!-- Start:: Password Input -->
-                    <base-input col="6" type="password" :placeholder="$t('PLACEHOLDERS.password')"
+                    <base-input col="12" type="password" :placeholder="$t('PLACEHOLDERS.old_password')"
+                      v-model.trim="data.old_password" required />
+                    <!-- End:: Password Input -->
+
+                    <!-- Start:: Password Input -->
+                    <base-input col="6" type="password" :placeholder="$t('PLACEHOLDERS.new_password')"
                       v-model.trim="data.password" required />
                     <!-- End:: Password Input -->
 
@@ -96,6 +96,7 @@ export default {
         name: null,
         email: null,
         enableEditPassword: false,
+        old_password: null,
         password: null,
         passwordConfirmation: null,
       },
@@ -143,15 +144,16 @@ export default {
       try {
         let res = await this.$axios({
           method: "GET",
-          url: `admin/admins/${this.authenticatedUserData.id}`,
+          url: `auth/profile`,
         });
         // console.log( "DATA TO EDIT =>", res.data.data.region );
 
         // Start:: Set Data
-        this.data.image.path = res.data.body.admin.avatar;
-        this.data.name = res.data.body.admin.name;
-        this.data.email = res.data.body.admin.email;
+        this.data.image.path = res.data.data.avatar;
+        this.data.name = res.data.data.name;
+        this.data.email = res.data.data.email;
         // End:: Set Data
+
       } catch (error) {
         console.log(error.response.data.message);
       }
@@ -191,7 +193,11 @@ export default {
       //   return;
       // }
       else if (this.data.enableEditPassword) {
-        if (!this.data.password) {
+        if (!this.data.old_password) {
+          this.isWaitingRequest = false;
+          this.$message.error(this.$t("VALIDATION.old_password"));
+          return;
+        } else if (!this.data.password) {
           this.isWaitingRequest = false;
           this.$message.error(this.$t("VALIDATION.password"));
           return;
@@ -234,22 +240,22 @@ export default {
       REQUEST_DATA.append("name", this.data.name);
       REQUEST_DATA.append("email", this.data.email);
       if (this.data.enableEditPassword) {
-        REQUEST_DATA.append("password", this.data.password);
-        REQUEST_DATA.append("password_confirmation", this.data.passwordConfirmation);
+        REQUEST_DATA.append("old_password", this.data.old_password);
+        REQUEST_DATA.append("new_password", this.data.password);
+        REQUEST_DATA.append("new_password_confirmation", this.data.passwordConfirmation);
       }
-      REQUEST_DATA.append("_method", "PUT");
       // Start:: Append Request Data
 
       try {
         let res = await this.$axios({
           method: "POST",
-          url: `admin/admins/${this.authenticatedUserData.id}`,
+          url: `auth/edit-profile`,
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;
         this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
         this.setAuthenticatedUserData({
-          name: res.data.body.admin.name,
+          name: res.data.data.name,
         });
         this.toggleModal();
       } catch (error) {

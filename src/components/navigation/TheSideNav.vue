@@ -148,13 +148,27 @@ export default {
 
       // Start:: Side Navbar List
       sideNavbarList: [
-        // {
-        //   key: "clients",
-        //   title: this.$t("SIDENAV.Clients.title"),
-        //   icon: require("@/assets/media/icons/ui_icons/clients.svg"),
-        //   route: "/clients/all",
-        //   // hasPermission: false,
-        // },
+        {
+          key: "Equipments",
+          title: this.$t("PLACEHOLDERS.el_equipments"),
+          icon: require("@/assets/media/icons/ui_icons/product.svg"),
+          route: "/Equipments/all",
+          // hasPermission: false,
+        },
+        {
+          key: "transport",
+          title: this.$t("PLACEHOLDERS.transport"),
+          icon: require("@/assets/media/icons/ui_icons/car.svg"),
+          route: "/transport/all",
+          // hasPermission: false,
+        },
+        {
+          key: "contact",
+          title: this.$t("PLACEHOLDERS.contact_us"),
+          icon: require("@/assets/media/icons/ui_icons/messages.svg"),
+          route: "/contact/create",
+          // hasPermission: false,
+        },
       ],
       // End:: Side Navbar List
 
@@ -165,7 +179,7 @@ export default {
   },
 
   methods: {
-    // Start:: Vuex Auth Actions
+    // Start:: Vuex Auth Actions 
     ...mapActions({
       logout: "AuthenticationModule/logout",
     }),

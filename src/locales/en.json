@@ -371,7 +371,9 @@
     "new": "New",
     "confirmed": "Confirmed",
     "Processing_in_progress": "Processing in Progress",
-    "all": "All"
+    "all": "All",
+    "isAvailable": "Is Available",
+    "is_not_Available": "Not Available"
   },
 
   "CHARTS": {
@@ -606,6 +608,7 @@
     "phoneNumber": "Phone Number",
     "secondPhone": "Second Phone Number",
     "password": "Password",
+    "new_password": "New Password",
     "confirmPassword": "Confirm Password",
     "userName": "User Name",
     "writeHere": "Write Here",
@@ -792,7 +795,30 @@
     "change_status": "Change Status",
 
     "individual": "individual",
-    "store": "store"
+    "store": "store",
+
+    "equipments": "Equipments",
+    "el_equipments": "Equipments",
+    "transport": "Transport",
+
+    "equipment_image": "Equipment image",
+    "equipment_name": "Equipment Name",
+    "Available_number": "Available Number",
+    "equipment_cost": "Equipment Cost",
+    "ownerName": "Equipment Owner",
+
+    "add_equipment": "Add Equipment",
+    "edit_equipment": "Edit Equipment",
+    "show_equipment": "Show Equipment",
+    "transportType": " transport Type",
+    "is_transport": "support transport",
+    "contact_us": "contact us",
+    "content": "content",
+
+    "old_password": "Old Password",
+    "is_paymentStatus": "Allow Payment",
+    "min_payment": "Minimum Payment",
+    "day_payment": "Payment Interval"
   },
 
   "VALIDATION": {
@@ -803,6 +829,7 @@
     "email_domain": "The e-mail should contain .com/.net",
     "missingAtSymbol": "missingAtSymbol",
     "password": "Password Field Cant Be Empty",
+    "old_password": "Old Password Field Cant Be Empty",
     "passwordLength": "Password Must Be At Least 6 Digits",
     "mobileNumber": "Mobile Number Field Cant Be Empty",
     "phoneNumber": "Phone Number Field Cant Be Empty",
