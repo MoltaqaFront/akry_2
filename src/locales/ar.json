@@ -130,7 +130,7 @@
   "TABLES": {
     "loadingData": "جاري تحميل البيانات",
     "noData": "لايوجد بيانات",
-    "Addresses": {
+    "TABLES": {
       "serialNumber": "المسلسل",
       "address": "العنوان",
       "area": "المنطقة",
@@ -594,7 +594,8 @@
     "addOrder": "إضافة طلب جديد",
     "offer": "العرض",
     "offers": "العروض",
-    "show_offer": "عرض بيانات العرض"
+    "show_offer": "عرض بيانات العرض",
+    "wait": "في انتظار موافقة العميل"
   },
 
   "TABS": {
@@ -809,26 +810,130 @@
     "change_status": "تغيير الحالة",
     "individual": "فردي",
     "store": "مؤسسة",
+    "equipment": "المعدة",
     "equipments": "معدات",
     "el_equipments": "المعدات",
-    "transport": "توصيل",
+    "transport": "خدمة النقل",
     "equipment_image": "صورة المعدة",
     "equipment_name": "اسم المعدة",
     "Available_number": "العدد المتاح",
     "equipment_cost": "تكلفة المعدة",
     "ownerName": "مالك المعدة",
+
     "add_equipment": "اضافة معدة",
     "edit_equipment": "تعديل المعدة",
     "show_equipment": "عرض المعدة",
+
+    "add_transport": "إضافة خدمة النقل",
+    "edit_transport": "تعديل خدمة النقل",
+    "show_transport": "عرض خدمة النقل",
+
     "transportType": "نوع النقل",
     "is_transport": "تدعم النقل",
 
     "contact_us": "تواصل معنا",
     "content": "المحتوي",
     "old_password": "كلمة المرور القديمة",
+
+    "payment_details": "تفاصيل الدفع",
+
     "is_paymentStatus": "تقبل الدفعات",
     "min_payment": "اقل قيمة دفعة",
-    "day_payment": "الفتره بين الدفعات"
+    "day_payment": " الفتره بين الدفعات (أيام) ",
+    "transport_type": "نوع النقل",
+    "main_cat": "قسم المعدة الرئيسي",
+    "sub_cat": "قسم المعدة الفرعي",
+    "inner_sub_cat": "قسم المعدة الفرعي الداخلي",
+
+    "upload_video": "إضافة الفيديو",
+    "equipment_images": "صور المعدة",
+
+    "quantity": "الكمية المطلوبة",
+
+    "price_in_city": "تكلفة النقل / بالرد (داخل المدينة)",
+    "price_out_city": "تكلفة النقل بالكيلو (خارج المدينة)",
+
+    "weights": "الاوزان",
+    "Categories": "التصنيفات",
+
+    "service": "الخدمة",
+    "service_Count": "عدد الخدمة",
+    "order_total": "إجمالي تكلفة الطلب",
+
+    "pending": "قيد الانتظار",
+    "active_status": "نشط",
+    "declined": "مرفوض",
+    "finished": "مكتمل",
+
+    "reject_order": "هل أنت متأكد من رفض الطلب؟",
+    "reason": "السبب",
+    "order_service": "صورة طالب الخدمة",
+    "name_requester": "اسم طالب الخدمة",
+    "order_id": "رقم الطلب ",
+    "order_time": "مدة الطلب",
+    "day_cost": "تكلفة المعدة باليوم",
+    "service_cost": "تكلفة الخدمة",
+    "tax": "القيمة المضافة",
+    "total": "الاجمالي ",
+    "service_count": "عدد الدفعات",
+    "first_pay": "قيمة الدفعة الأولى",
+    "location_taken": "موقع الاستلام",
+
+    "transport_image": "صورة آلة النقل",
+    "transport_name": "اسم آلة النقل",
+    "transport_address": "عنوان آلة النقل",
+    "Load_Weight": "وزن الحمولة",
+    "Number_of_Returns": "عدد مرات الرد",
+    "Number_Carriers": "عدد الناقلات المطلوبة",
+    "Service_Date": "تاريخ الخدمة",
+    "Starting_Point": "نقطة البداية",
+    "Ending_Point": "نقطة النهاية",
+    "Cost_Return": "تكلفة النقل بالرد",
+    "Cost_Kilogram": "تكلفة النقل بالكيلو",
+    "wallet": "المحفظة",
+
+    "wallet_history": "سجل المحفظه",
+
+    "Current_balance": "الرصيد الحالي",
+    "balance": "الرصيد",
+    "filter_request": "طلب تصفية",
+
+    "operation_name": "اسم العملية",
+
+    "show_wallet_history": "عرض سجل المحفظة",
+
+    "adminEdit": "تحرير المشرف",
+    "newOrder": "طلب جديد",
+    "cancelledOrder": "الطلبات الملغاة",
+    "withdrawAccept": "قبول السحب",
+
+    "PhoneCode": "الكود المرسل",
+    "ChangePhone": "تغيير رقم الهاتف",
+    "ServName": "اسم الخدمة",
+    "ServImg": "صورة الخدمة",
+    "AddTransport": "اضافة خدمة",
+    "ChangePhoneLink": "تغيير رقم الجوال",
+    "TransportTitle": "التوصيل",
+    "faq": "الأسئلة الشائعة",
+    "about": "من نحن",
+    "privacy": "سياسة الخصوصية",
+    "terms": "الشروط والاحكام",
+    "chat": "الرسائل",
+
+    "LastMessageDate": "تاريخ آخر رسالة",
+    "LastMessage": "آخر رسالة",
+
+    "show_chat": "عرض الشات",
+
+    "request": "طلب",
+    "complain": "شكوى",
+    "perposal": "اقتراح",
+    "other": "أخرى",
+
+    "Optional_Features": "الميزات الاختيارية",
+    "show_Optional_Features": "إظهار الميزات الاختيارية",
+    "required": "الميزات المطلوبة",
+    "answer_reply": "الرد (تكرار النقل)"
   },
 
   "VALIDATION": {
@@ -882,7 +987,33 @@
     "logo": "يجب اختيار اللوجو",
     "cover": "يجب اختيار الصورة الخلفية",
     "commericalProfile": "يجب اختيار صورة الملف التجاري ",
-    "taxProfile": "يجب اختيار صورة الملف الضريبي"
+    "taxProfile": "يجب اختيار صورة الملف الضريبي",
+
+    "one_image": "يجب عليك اختيار صورة واحدة على الأقل",
+    "is_available": "يجب عليك اختيار الحالة",
+    "available_number": "حقل العدد المتاح لا يمكن أن يكون فارغًا",
+    "is_transport": "حقل تدعم النقل لا يمكن أن يكون فارغًا",
+    "is_payment": "حقل تقبل الدفعات  لا يمكن أن يكون فارغًا",
+    "min_payment": "حقل الحد الأدنى للدفع لا يمكن أن يكون فارغًا",
+    "day_payment": "حقل الفتره بين الدفعات لا يمكن أن يكون فارغًا",
+    "transport_type_id": "حقل نوع النقل لا يمكن أن يكون فارغًا",
+    "sub_inner_list": "حقل نوع القائمة الفرعية الداخلي لا يمكن أن يكون فارغًا",
+    "video": "حقل الفيديو لا يمكن أن يكون فارغًا",
+    "place": "حقل المكان لا يمكن أن يكون فارغًا",
+
+    "vide_du": "يجب أن يكون مدى الفيديو بين 20 و 30 ثانية!",
+    "upload_complete": "تم تحميل الفيديو بنجاح",
+
+    "price_in_city": "حقل السعر ف المدينة لا يمكن أن يكون فارغًا",
+    "price_out_city": "حقل السعر خارج المدينة لا يمكن أن يكون فارغًا",
+
+    "weights": "حقل الاوزان لا يمكن أن يكون فارغًا",
+    "Categories": "حقل التصنيفات لا يمكن أن يكون فارغًا",
+    "messageType": "حقل نوع الرسالة لا يمكن ان يكون فارغا",
+
+    "price_out_city_positive": "حقل السعر خارج المدينة يقبل فقط الأرقام الإيجابية",
+    "price_in_city_positive": "حقل السعر داخل المدينة يقبل فقط الأرقام الإيجابية",
+    "number_available_positive": "حقل الأعداد المتاحة يقبل فقط الأرقام الإيجابية"
   },
 
   "MESSAGES": {
@@ -899,6 +1030,8 @@
     "changeVerification": "تم تغيير حالة تنشيط الحساب بنجاح",
     "changeHaveContainer": "تم تغيير حالة لديه حاوية بنجاح",
     "changeDraft": "تم تغيير حالة الأرشفة بنجاح",
-    "savedSuccessfully": "تم الحفظ بنجاح"
+    "savedSuccessfully": "تم الحفظ بنجاح",
+    "accept_order": "تم قبول الطلب",
+    "reject_order": "تم رفض الطلب"
   }
 }

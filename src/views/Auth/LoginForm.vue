@@ -170,7 +170,7 @@ export default {
       REQUEST_DATA["phone"] = this.loginData.phone;
       REQUEST_DATA["password"] = this.loginData.password;
       REQUEST_DATA["role"] = this.getAuthenticatedUserData.role;
-      REQUEST_DATA["device_token"] = this.device_token;
+      REQUEST_DATA["device_token"] = this.device_token ? this.device_token : "mosbah";
       // End:: Append Request Data (JSON)
 
       try {
@@ -196,6 +196,8 @@ export default {
             phone: res.data.data.data.phone,
             role: res.data.data.data.role,
           });
+
+          localStorage.setItem('main_type', res.data.data.data.serviceType)
 
           // End:: Set Authed User Data
           this.$message.success(this.$t("VALIDATION.loginSuccess"));

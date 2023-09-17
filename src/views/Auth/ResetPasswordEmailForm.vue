@@ -29,7 +29,7 @@
       </form>
 
       <!-- Start:: Login Route Wrapper -->
-      <router-link to="/" class="register_route">
+      <router-link to="/login" class="register_route">
         <span>{{ $t("BUTTONS.haveAccount") }}</span>
         <span> {{ $t("BUTTONS.login") }}</span>
       </router-link>

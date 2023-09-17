@@ -8,7 +8,7 @@ const USER_TOKEN =
 const CURRENT_LANG = store.getters["AppLangModule/getAppLocale"];
 
 // Global headers
-axios.defaults.baseURL = "http://akry.moltaqadev.com/api/";
+axios.defaults.baseURL = "https://akryapps.com/api/";
 axios.defaults.headers.common["cache-control"] = "no-cache";
 axios.defaults.headers.common["Accept"] = "application/json";
 axios.defaults.headers.common["Accept-language"] = CURRENT_LANG;

@@ -575,7 +575,8 @@
     "additions": "Additions",
     "components": "Components",
     "AllSections": "All Sections",
-    "show_offer": "Show Offer"
+    "show_offer": "Show Offer",
+    "wait": "Wait For Acceptance"
   },
 
   "TABS": {
@@ -798,6 +799,7 @@
     "store": "store",
 
     "equipments": "Equipments",
+    "equipment": "Equipment",
     "el_equipments": "Equipments",
     "transport": "Transport",
 
@@ -807,9 +809,16 @@
     "equipment_cost": "Equipment Cost",
     "ownerName": "Equipment Owner",
 
+    "quantity": "Quantity",
+
     "add_equipment": "Add Equipment",
     "edit_equipment": "Edit Equipment",
     "show_equipment": "Show Equipment",
+
+    "add_transport": "Add Transport Service",
+    "edit_transport": "Edit Transport Service",
+    "show_transport": "Show Transport Service",
+
     "transportType": " transport Type",
     "is_transport": "support transport",
     "contact_us": "contact us",
@@ -818,7 +827,100 @@
     "old_password": "Old Password",
     "is_paymentStatus": "Allow Payment",
     "min_payment": "Minimum Payment",
-    "day_payment": "Payment Interval"
+    "day_payment": "Payment Interval (Days)",
+    "transport_type": "Transport Type",
+
+    "main_cat": "Main Equipment Category",
+    "sub_cat": "Sub Equipment Category",
+    "inner_sub_cat": "Inner Sub Equipment Category",
+
+    "upload_video": "Upload Video",
+    "equipment_images": "Equipment Images",
+
+    "weights": "Weights",
+    "Categories": "Categories",
+
+    "service_Count": "Number of services",
+    "order_total": "Total order cost",
+
+    "pending": "Pending",
+    "active_status": "Active",
+    "declined": "Declined",
+    "finished": "Finished",
+
+    "reject_order": "Are You Sure Reject Order",
+    "reason": "reason",
+
+    "order_service": "Service Order",
+    "name_requester": "Requester's Name",
+    "order_id": "Order ID",
+    "order_time": "Order Duration",
+    "day_cost": "Daily Equipment Cost",
+    "service_cost": "Service Cost",
+    "tax": "Value Added Tax (VAT)",
+    "total": "Total",
+    "service_count": "Number of Installments",
+    "first_pay": "First Installment Amount",
+    "location_taken": "Receipt location",
+
+    "service": "service",
+
+    "transport_image": "Transport Image",
+    "transport_name": "Transport Name",
+    "transport_address": "Transport Address",
+    "Load_Weight": "Load Weight",
+    "Number_of_Returns": "Number of Returns",
+    "Number_Carriers": "Number of Required Carriers",
+    "Service_Date": "Service Date",
+    "Starting_Point": "Starting Point",
+    "Ending_Point": "Ending Point",
+    "Cost_Return": "Transport Cost per Return",
+    "Cost_Kilogram": "Transport Cost per Kilogram",
+
+    "payment_details": "Payment Details",
+    "wallet": "wallet",
+
+    "wallet_history": "Wallet History",
+    "Current_balance": "Current Balance",
+    "balance": "Balance",
+    "filter_request": "Filter Request",
+    "operation_name": "Operation Name",
+
+    "show_wallet_history": "Show Wallet History",
+
+    "adminEdit": "Admin Edit",
+    "newOrder": "New Order",
+    "cancelledOrder": "Cancelled Orders",
+    "withdrawAccept": "Withdraw Accept",
+
+    "PhoneCode": "Sent code",
+    "ChangePhone": "Change Phone Number",
+    "ServName": "Service Name",
+    "ServImg": "Service Image",
+    "AddTransport": "Add Transport",
+    "ChangePhoneLink": "Change Phone Number",
+    "TransportTitle": "Transport",
+    "faq": "FAQ",
+    "about": "About Us",
+    "privacy": "Privacy",
+    "terms": "Terms",
+    "chat": "chat",
+    "price_in_city": "Transport Cost / per trip (within the city)",
+    "price_out_city": "Transport Cost per kilogram (outside the city)",
+
+    "LastMessageDate": "Last Message Date",
+    "LastMessage": "Last Message",
+    "show_chat": "Show Chat",
+
+    "request": "request",
+    "complain": "complain",
+    "perposal": "perposal",
+    "other": "other",
+
+    "Optional_Features": "Optional Features",
+    "show_Optional_Features": "Show Optional Features",
+    "required": "required",
+    "answer_reply": "Reply (repeat transfer)"
   },
 
   "VALIDATION": {
@@ -872,7 +974,33 @@
     "logo": "You Must Select Logo image",
     "cover": "You Must Select Cover Image",
     "commericalProfile": "You Must Select commerical Profile Image",
-    "taxProfile": "You Must Select tax Profile Image"
+    "taxProfile": "You Must Select tax Profile Image",
+
+    "one_image": "You must choose one image at least",
+    "is_available": "you must choose the Status",
+    "available_number": "Available Number Field Cant be Empty",
+    "is_transport": "Is Transport Field Cant be Empty",
+    "is_payment": "Is Payment Field Cant be Empty",
+    "min_payment": "Min Payment Field Cant be Empty",
+    "day_payment": "Day Payment Field Cant be Empty",
+    "transport_type_id": "Transport Type_id Field Cant be Empty",
+    "sub_inner_list": "sub Inner Sist Type_id Field Cant be Empty",
+    "video": "video Field Cant be Empty",
+    "place": "Place Field Cant be Empty",
+
+    "vide_du": "Video duration should be between 20 and 30 seconds.",
+    "upload_complete": "Upload complete!",
+
+    "price_in_city": "Price In City Field Cant be Empty",
+    "price_out_city": "Price Out City Field Cant be Empty",
+
+    "weights": "Weights Field Cant be Empty",
+    "Categories": "Categories Field Cant be Empty",
+    "messageType": "Message Type Field Cant be Empty",
+
+    "price_out_city_positive": "Filed Price Out City Accept only Positive Numbers",
+    "price_in_city_positive": "Filed Price In City Accept only Positive Numbers",
+    "number_available_positive": "Filed Available Numbers Accept only Positive Numbers"
   },
 
   "MESSAGES": {
@@ -889,6 +1017,9 @@
     "changeVerification": "Verification Status Changed Successfully",
     "changeHaveContainer": "Have Container Status Changed Successfully",
     "changeDraft": "Draft Status Changed Successfully",
-    "savedSuccessfully": "Saved Successfully"
+    "savedSuccessfully": "Saved Successfully",
+
+    "accept_order": "Order Accepted",
+    "reject_order": "Order Rejected"
   }
 }

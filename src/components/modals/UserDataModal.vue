@@ -21,9 +21,14 @@
               <!-- End:: Email Input -->
 
               <!-- Start:: Activate Edit Password Switch Input -->
-              <div class="input_wrapper switch_wrapper my-5">
+              <div class="input_wrapper switch_wrapper my-5 ">
                 <v-switch color="green" :label="$t('PLACEHOLDERS.editPassword')" v-model="data.enableEditPassword"
                   hide-details></v-switch>
+                <div class="title_route_wrapper c-phone-l" @click="goPage">
+                  <!-- <router-link to="/change-phone" class="mt-2 ch-p"> -->
+                  {{ $t("PLACEHOLDERS.ChangePhoneLink") }}
+                  <!-- </router-link> -->
+                </div>
               </div>
               <!-- End:: Activate Edit Password Switch Input -->
 
@@ -121,6 +126,11 @@ export default {
   },
 
   methods: {
+
+    goPage() {
+      this.$router.push('/change-phone')
+      this.toggleModal();
+    },
     // Start:: Control Modal Apperance
     toggleModal() {
       this.$emit('toggleModal');
@@ -258,6 +268,11 @@ export default {
           name: res.data.data.name,
         });
         this.toggleModal();
+
+        this.data.old_password = '';
+        this.data.password = '';
+        this.data.passwordConfirmation = '';
+
       } catch (error) {
         this.isWaitingRequest = false;
         this.$message.error(error.response.data.message);
@@ -278,5 +293,17 @@ export default {
     text-align: center;
     color: var(--main_theme_clr);
   }
+}
+
+.c-phone-l {
+  color: var(--main_theme_clr) !important;
+  font-size: 18px;
+  font-family: "Cairo-Medium";
+  cursor: pointer;
+}
+
+.switch_wrapper {
+  justify-content: space-between !important;
+  align-items: center;
 }
 </style>

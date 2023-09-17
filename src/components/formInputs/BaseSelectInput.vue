@@ -7,7 +7,7 @@
         <span class="text-danger" v-if="required">*</span>
       </label>
       <multiselect :options="optionsList" label="name" track-by="id" placeholder=" " :searchable="true"
-        :allow-empty="false" :show-labels="false" :open-direction="'bottom'" :value="value" @input="
+        :allow-empty="true" :show-labels="false" :open-direction="'bottom'" :value="value" @input="
           updateValue($event);
         $emit('fireInputEvent');
         " :multiple="multiple" :readonly="readonly" :disabled="disabled">

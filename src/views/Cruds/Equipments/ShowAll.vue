@@ -111,12 +111,22 @@
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
+
             <a-tooltip placement="bottom">
               <template slot="title">
                 <span>{{ $t("BUTTONS.show") }}</span>
               </template>
               <button class="btn_show" @click="showItem(item)">
                 <i class="fal fa-eye"></i>
+              </button>
+            </a-tooltip>
+
+            <a-tooltip placement="bottom">
+              <template slot="title">
+                <span>{{ $t("BUTTONS.edit") }}</span>
+              </template>
+              <button class="btn_edit" @click="editItem(item)">
+                <i class="fal fa-edit"></i>
               </button>
             </a-tooltip>
 
@@ -374,6 +384,9 @@ export default {
     showItem(item) {
       this.$router.push({ path: `/equipments/show/${item.id}` });
     },
+    editItem(item) {
+      this.$router.push({ path: `/equipments/edit/${item.id}` });
+    },
     // ===== End:: Show
 
 
@@ -412,6 +425,10 @@ export default {
   },
 
   created() {
+
+    if (localStorage.getItem('main_type') == 'transport') {
+      this.$router.push('/home')
+    }
     // Start:: Fire Methods
     window.addEventListener("click", () => {
       this.filterFormIsActive = false;

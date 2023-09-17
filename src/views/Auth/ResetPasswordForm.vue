@@ -91,19 +91,23 @@ export default {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.password"));
         return;
-      } else if (this.resetPasswordData.password.length < 6) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.passwordLength"));
-        return;
-      } else if (!this.resetPasswordData.confirmPassword) {
+      }
+      // else if (this.resetPasswordData.password.length < 6) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.passwordLength"));
+      //   return;
+      // }
+      else if (!this.resetPasswordData.confirmPassword) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.password"));
         return;
-      } else if (this.resetPasswordData.confirmPassword.length < 6) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.passwordLength"));
-        return;
-      } else if (
+      }
+      // else if (this.resetPasswordData.confirmPassword.length < 6) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.passwordLength"));
+      //   return;
+      // }
+      else if (
         this.resetPasswordData.password !=
         this.resetPasswordData.confirmPassword
       ) {

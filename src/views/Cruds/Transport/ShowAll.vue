@@ -52,7 +52,7 @@
       <!--  =========== Start:: Table Title =========== -->
       <div class="table_title_wrapper">
         <div class="title_text_wrapper">
-          <h5>{{ $t("PLACEHOLDERS.el_equipments") }}</h5>
+          <h5>{{ $t("PLACEHOLDERS.TransportTitle") }}</h5>
           <button v-if="!filterFormIsActive" class="filter_toggler"
             @click.stop="filterFormIsActive = !filterFormIsActive">
             <i class="fal fa-search"></i>
@@ -61,7 +61,7 @@
 
         <div class="title_route_wrapper">
           <router-link to="/transport/create">
-            {{ $t("PLACEHOLDERS.add_equipment") }}
+            {{ $t("PLACEHOLDERS.AddTransport") }}
           </router-link>
         </div>
       </div>
@@ -117,6 +117,15 @@
               </template>
               <button class="btn_show" @click="showItem(item)">
                 <i class="fal fa-eye"></i>
+              </button>
+            </a-tooltip>
+
+            <a-tooltip placement="bottom">
+              <template slot="title">
+                <span>{{ $t("BUTTONS.edit") }}</span>
+              </template>
+              <button class="btn_edit" @click="editItem(item)">
+                <i class="fal fa-edit"></i>
               </button>
             </a-tooltip>
 
@@ -238,24 +247,24 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.equipment_image"),
+          text: this.$t("PLACEHOLDERS.ServImg"),
           value: "image",
           align: "center",
           // width: "80",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.equipment_name"),
+          text: this.$t("PLACEHOLDERS.ServName"),
           value: "name",
           align: "center",
           sortable: false,
         },
-        {
-          text: this.$t("PLACEHOLDERS.is_transport"),
-          value: "isTransport",
-          align: "center",
-          sortable: false,
-        },
+        // {
+        //   text: this.$t("PLACEHOLDERS.is_transport"),
+        //   value: "isTransport",
+        //   align: "center",
+        //   sortable: false,
+        // },
         {
           text: this.$t("PLACEHOLDERS.transportType"),
           value: "transportType.name",
@@ -263,16 +272,17 @@ export default {
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.Available_number"),
-          value: "availableNumber",
+          text: this.$t("PLACEHOLDERS.price_in_city"),
+          value: "priceInCity",
           align: "center",
+          width: "180",
           sortable: false,
         },
         {
-          text: this.$t("PLACEHOLDERS.equipment_cost"),
-          value: "price",
+          text: this.$t("PLACEHOLDERS.price_out_city"),
+          value: "priceOutCity",
           align: "center",
-          width: "120",
+          width: "180",
           sortable: false,
         },
         {
@@ -374,6 +384,9 @@ export default {
     showItem(item) {
       this.$router.push({ path: `/transport/show/${item.id}` });
     },
+    editItem(item) {
+      this.$router.push({ path: `/transport/edit/${item.id}` });
+    },
     // ===== End:: Show
 
 
@@ -412,6 +425,11 @@ export default {
   },
 
   created() {
+
+    if (localStorage.getItem('main_type') == 'equipement') {
+      this.$router.push('/home')
+    }
+
     // Start:: Fire Methods
     window.addEventListener("click", () => {
       this.filterFormIsActive = false;

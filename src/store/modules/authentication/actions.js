@@ -25,6 +25,15 @@ export default {
       router.replace("/");
       location.reload();
     } catch (error) {
+      localStorage.removeItem("akry_dashboard_user_id");
+      localStorage.removeItem("akry_dashboard_user_token");
+      localStorage.removeItem("akry_dashboard_userName");
+      localStorage.removeItem("akry_dashboard_userPhone");
+      localStorage.removeItem("akry_dashboard_userPhone");
+      localStorage.removeItem("akry_dashboard_user_role");
+      localStorage.removeItem("verify_code");
+      router.replace("/");
+      location.reload();
       console.log(error.response.data.message);
     }
   },

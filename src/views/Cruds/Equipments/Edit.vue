@@ -3,7 +3,7 @@
 
     <!-- Start:: Title -->
     <div class="form_title_wrapper">
-      <h4>{{ $t("PLACEHOLDERS.add_transport") }}</h4>
+      <h4>{{ $t("PLACEHOLDERS.edit_equipment") }}</h4>
     </div>
     <!-- End:: Title -->
 
@@ -50,11 +50,7 @@
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.name')" v-model.trim="data.name" required />
           <!-- End:: Name Input -->
 
-          <base-input col="6" type="number" :placeholder="$t('PLACEHOLDERS.price_in_city')"
-            v-model.trim="data.price_in_city" required />
-
-          <base-input col="6" type="number" :placeholder="$t('PLACEHOLDERS.price_out_city')"
-            v-model.trim="data.price_out_city" required />
+          <base-input col="6" type="number" :placeholder="$t('PLACEHOLDERS.price')" v-model.trim="data.price" required />
 
           <base-select-input col="6" :optionsList="is_availableStatus" :placeholder="$t('PLACEHOLDERS.status')"
             v-model="data.is_available" required />
@@ -62,83 +58,60 @@
           <base-input col="6" type="number" :placeholder="$t('PLACEHOLDERS.Available_number')"
             v-model.trim="data.available_number" required />
 
-          <base-select-input col="6" :optionsList="is_transportStatus" :placeholder="$t('PLACEHOLDERS.answer_reply')"
+          <base-select-input col="6" :optionsList="is_transportStatus" :placeholder="$t('PLACEHOLDERS.is_transport')"
             v-model="data.is_transport" required />
 
           <base-select-input col="6" :optionsList="is_paymentStatus" :placeholder="$t('PLACEHOLDERS.is_paymentStatus')"
             v-model="data.is_payment" required />
 
-          <base-input col="6" type="number" v-if="data.is_payment.value == 1"
+          <base-input col="6" type="number" v-if="data.is_payment.value == 1 || data.is_payment.id == 1"
             :placeholder="$t('PLACEHOLDERS.min_payment')" v-model.trim="data.min_payment" required />
 
-          <base-input col="6" type="number" v-if="data.is_payment.value == 1"
+          <base-input col="6" type="number" v-if="data.is_payment.value == 1 || data.is_payment.id == 1"
             :placeholder="$t('PLACEHOLDERS.day_payment')" v-model.trim="data.day_payment" required />
 
-
           <base-select-input col="6" :optionsList="allTransport" :placeholder="$t('PLACEHOLDERS.transport_type')"
-            v-model="data.transport_type_id" required @input="getWeightsAndCategories(data.transport_type_id)" />
+            v-model="data.transport_type_id" required />
 
-          <base-select-input col="6" v-if="data.transport_type_id" :optionsList="weights"
-            :placeholder="$t('PLACEHOLDERS.weights')" v-model="weight_equip" required />
 
-          <base-select-input col="6" v-if="data.transport_type_id" :optionsList="categories"
-            :placeholder="$t('PLACEHOLDERS.Categories')" v-model="category_equip" required />
+          <base-select-input col="6" :optionsList="main_cat" :placeholder="$t('PLACEHOLDERS.main_cat')"
+            v-model="main_list" required @input="getSub(main_list)" />
 
-          <button type="button" class="show" @click="showOptionalFeatures = true" v-if="AllFeatures.optional">
-            {{ $t('PLACEHOLDERS.show_Optional_Features') }}
-          </button>
+          <base-select-input col="6" v-if="sub_cat.length || main_list" :optionsList="sub_cat"
+            :placeholder="$t('PLACEHOLDERS.sub_cat')" v-model="sub_list" required @input="get_inner_Sub(sub_list)" />
 
-          <!-- Render required features -->
-          <div class="row">
-
-            <h3 v-if="AllFeatures.required">{{ $t('PLACEHOLDERS.required') }}</h3>
-
-            <div class="col-lg-6 col-12" v-for="(item, index) in AllFeatures.required" :key="'c' + index">
-
-              <div v-if="item.inputType === 'text' || item.inputType === 'longText' || item.inputType === 'number'">
-                <base-input type="text" :placeholder="item.name" v-model="requiredInputs[index]" required />
-              </div>
-
-              <div v-if="item.inputType === 'multiChoice'">
-                <base-select-input :optionsList="item.choices" :placeholder="item.name" v-model="requiredChoices[index]"
-                  required multiple />
-              </div>
-
-              <div v-if="item.inputType === 'radio'">
-                <base-select-input :optionsList="item.choices" :placeholder="item.name" v-model="requiredChoices[index]"
-                  required />
-              </div>
-
-            </div>
-
-          </div>
-          <!-- Render required features -->
+          <base-select-input col="6" v-if="sub_inner_cat.length || sub_list" :optionsList="sub_inner_cat"
+            :placeholder="$t('PLACEHOLDERS.inner_sub_cat')" v-model="sub_inner_list" required @input="GetFeatures" />
 
           <!-- Render optional features -->
+          <div v-for="(item, index) in allFeatures.optional" :key="'a' + index">
+            <div class="row">
+              <base-input class="col-lg-6 col-12" type="text"
+                v-if="item.inputType === 'text' || item.inputType === 'longText' || item.inputType === 'number'"
+                :placeholder="item.name" v-model="item.choice"
+                @input="updateChoiceAndInput(item, index, $event.target.value)" required />
 
-          <base-select-input v-if="showOptionalFeatures" col="12" :optionsList="AllFeatures.optional"
-            :placeholder="$t('PLACEHOLDERS.Optional_Features')" v-model="selectedOptionalNames" multiple />
 
-          <div v-if="selectedOptionalNames.length > 0" class="row">
-
-            <div class="col-lg-6 col-12" v-for="(selectedName, index) in selectedOptionalNames" :key="index">
-              <div
-                v-if="selectedName.inputType === 'text' || selectedName.inputType === 'longText' || selectedName.inputType === 'number'">
-                <base-input type="text" :placeholder="selectedName.name" v-model="optionalInputs[index]" required />
-              </div>
-
-              <div v-else-if="selectedName.inputType === 'multiChoice'">
-                <base-select-input :optionsList="selectedName.choices" :placeholder="selectedName.name"
-                  v-model="optionalChoices[index]" required multiple />
-              </div>
-
-              <div v-else-if="selectedName.inputType === 'radio'">
-                <base-select-input :optionsList="selectedName.choices" :placeholder="selectedName.name"
-                  v-model="optionalChoices[index]" required />
-              </div>
-
+              <!-- make allChoices is  choices to work fine -->
+              <base-select-input class="col-lg-6 col-12"
+                v-if="item.inputType === 'radio' || item.inputType === 'multiChoice'" :optionsList="item.choices"
+                :placeholder="item.name" v-model="item.myChoices" required multiple
+                @input="updateOptionalChoices(item, index, $event.target.value)" />
             </div>
+          </div>
 
+          <!-- Render required features -->
+          <div v-for="(item, index) in allFeatures.required" :key="'c' + index">
+            <div class="row">
+              <base-input class="col-lg-6 col-12" type="text"
+                v-if="item.inputType === 'text' || item.inputType === 'longText' || item.inputType === 'number'"
+                :placeholder="item.name" v-model="item.choice"
+                @input="updateRequiredChoiceAndInput(item, index, $event.target.value)" required />
+
+              <base-select-input class="col-lg-6 col-12"
+                v-if="item.inputType === 'radio' || item.inputType === 'multiChoice'" :optionsList="item.choices"
+                :placeholder="item.name" v-model="item.myChoices" required multiple />
+            </div>
           </div>
 
 
@@ -151,14 +124,22 @@
               @change="handleFileChange" accept="video/*" />
           </div>
 
+          <video class="mt-4" width="100%" height="240" controls v-if="videoLink">
+            <source :src="videoLink" type="video/mp4">
+            <source :src="videoLink" type="video/ogg">
+            Your browser does not support the video tag.
+          </video>
+
+          <!-- <div v-if="videoLink">
+            <a :href="videoLink" target="_blank">View Uploaded Video</a>
+          </div> -->
 
           <div v-if="uploading" class="w-100">
             <progress class="w-100" :value="uploadProgress" max="100"></progress>
             <p>{{ Math.round(uploadProgress) }}% uploaded</p>
           </div>
 
-          <base-input col="12" type="text" :placeholder="$t('PLACEHOLDERS.transport_address')" v-model.trim="place"
-            required />
+          <base-input col="12" type="text" :placeholder="$t('TABLES.Addresses.address')" v-model.trim="place" required />
 
           <div class="row">
             <div class="col-12">
@@ -218,17 +199,16 @@ export default {
       return [
         {
           id: 0,
-          name: this.$t('STATUS.notActive'),
+          name: this.$t('STATUS.is_not_Available'),
           value: 0
         },
         {
           id: 1,
-          name: this.$t('STATUS.active'),
+          name: this.$t('STATUS.isAvailable'),
           value: 1
         }
       ]
     },
-
     is_transportStatus() {
       return [
         {
@@ -243,7 +223,6 @@ export default {
         }
       ]
     },
-
     is_paymentStatus() {
       return [
         {
@@ -299,8 +278,7 @@ export default {
         },
 
         name: null,
-        price_in_city: null,
-        price_out_city: null,
+        price: null,
         is_available: null,
         available_number: null,
         is_transport: '',
@@ -312,9 +290,12 @@ export default {
 
       },
 
+      // video data
+
       file: null,
       uploading: false,
       uploadProgress: 0,
+      videoLink: null,
 
       allTransport: [],
       transport_type_id: '',
@@ -327,14 +308,8 @@ export default {
       sub_inner_cat: [],
       sub_inner_list: '',
 
-      AllFeatures: [],
+      allFeatures: [],
 
-      // get weights and categories
-
-      categories: [],
-      category_equip: '',
-      weights: [],
-      weight_equip: '',
 
       // google maps
 
@@ -353,9 +328,6 @@ export default {
       place: '',
       // End:: Data Collection To Send
 
-      selectedOptionalNames: [],
-      showOptionalFeatures: false,
-
       optionalInputs: [],
       optionalChoices: [],
       requiredInputs: [],
@@ -365,6 +337,21 @@ export default {
   },
 
   methods: {
+
+    updateChoiceAndInput(item, index, newValue) {
+      item.choice = newValue;
+      this.optionalInputs[index] = newValue;
+    },
+
+    updateOptionalChoices(item, index, newValue) {
+      console.log(item)
+      this.optionalChoices[index] = newValue;
+    },
+
+    updateRequiredChoiceAndInput(item, index, newValue) {
+      item.choice = newValue;
+      this.requiredInputs[index] = newValue;
+    },
 
     // Start:: Select Upload Image
 
@@ -394,8 +381,8 @@ export default {
     // Start:: validate Form Inputs
     validateFormInputs() {
       this.isWaitingRequest = true;
-      if (!this.data.back_image.file && !this.data.id_imge.file && !this.data.liecence_image.file
-        && !this.data.front_image.file && !this.data.back_5.file && !this.data.back_6.file
+      if (!this.data.back_image.path && !this.data.id_imge.path && !this.data.liecence_image.path
+        && !this.data.front_image.path && !this.data.back_5.path && !this.data.back_6.path
       ) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.one_image"));
@@ -406,24 +393,9 @@ export default {
         this.$message.error(this.$t("VALIDATION.name"));
         return;
       }
-      else if (!this.data.price_in_city) {
+      else if (!this.data.price) {
         this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.price_in_city"));
-        return;
-      }
-      else if (isNaN(this.data.price_in_city) || this.data.price_in_city <= 0) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.price_in_city_positive"));
-        return;
-      }
-      else if (!this.data.price_out_city) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.price_out_city"));
-        return;
-      }
-      else if (isNaN(this.data.price_out_city) || this.data.price_out_city <= 0) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.price_out_city_positive"));
+        this.$message.error(this.$t("VALIDATION.price"));
         return;
       }
       else if (!this.data.is_available) {
@@ -436,11 +408,6 @@ export default {
         this.$message.error(this.$t("VALIDATION.available_number"));
         return;
       }
-      else if (isNaN(this.data.available_number) || this.data.available_number <= 0) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.number_available_positive"));
-        return;
-      }
       else if (!this.data.is_transport) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.is_transport"));
@@ -451,12 +418,12 @@ export default {
         this.$message.error(this.$t("VALIDATION.is_payment"));
         return;
       }
-      else if (this.data.is_payment?.value == 1 && !this.data.min_payment) {
+      else if (this.data.is_payment?.value === 1 && !this.data.min_payment) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.min_payment"));
         return;
       }
-      else if (this.data.is_payment?.value == 1 && !this.data.day_payment) {
+      else if (this.data.is_payment?.value === 1 && !this.data.day_payment) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.day_payment"));
         return;
@@ -467,17 +434,12 @@ export default {
         this.$message.error(this.$t("VALIDATION.transport_type_id"));
         return;
       }
-      else if (!this.weight_equip) {
+      else if (!this.sub_inner_list) {
         this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.weights"));
+        this.$message.error(this.$t("VALIDATION.sub_inner_list"));
         return;
       }
-      else if (!this.category_equip) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.Categories"));
-        return;
-      }
-      else if (!this.file) {
+      else if (!this.file && !this.videoLink) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.video"));
         return;
@@ -498,9 +460,9 @@ export default {
     async submitForm() {
       const REQUEST_DATA = new FormData();
       // Start:: Append Request Data
+      REQUEST_DATA.append("_method", "PUT");
       REQUEST_DATA.append("name", this.data.name);
-      REQUEST_DATA.append("price_in_city", this.data.price_in_city);
-      REQUEST_DATA.append("price_out_city", this.data.price_out_city);
+      REQUEST_DATA.append("price", this.data.price);
 
       if (this.data.id_imge.file) {
         REQUEST_DATA.append("images[0]", this.data.id_imge.file);
@@ -521,103 +483,76 @@ export default {
         REQUEST_DATA.append("images[5]", this.data.back_6.file);
       }
 
-      REQUEST_DATA.append("video", this.file);
+      if (this.file) {
+        // If a new video file is selected, append it
+        REQUEST_DATA.append("video", this.file);
+      }
+      // } else if (this.videoLink) {
+      //   const videoBlob = new Blob([this.videoLink], { type: 'text/plain' });
+      //   REQUEST_DATA.append("video", videoBlob, "video_link.txt");
+      // }
+      REQUEST_DATA.append("equipement_sub_category_id", this.sub_inner_list?.id);
       REQUEST_DATA.append("transport_type_id", this.data.transport_type_id?.id);
-      REQUEST_DATA.append("weights[0]", this.weight_equip?.id);
-      REQUEST_DATA.append("categories[0]", this.category_equip?.id);
-      REQUEST_DATA.append("is_available", this.data.is_available?.value);
+      REQUEST_DATA.append("is_available", this.data.is_available?.id);
       REQUEST_DATA.append("available_number", this.data.available_number);
-      REQUEST_DATA.append("is_transport", this.data.is_transport?.value);
-      REQUEST_DATA.append("is_payment", this.data.is_payment?.value);
+      REQUEST_DATA.append("is_transport", this.data.is_transport?.id);
+      REQUEST_DATA.append("is_payment", this.data.is_payment?.id);
 
-      if (this.data.is_payment?.value == 1) {
+      if (this.data.is_payment?.id === 0) {
+        REQUEST_DATA.append("min_payment", 0);
+        REQUEST_DATA.append("day_payment", 0);
+      } else {
         REQUEST_DATA.append("min_payment", this.data.min_payment);
         REQUEST_DATA.append("day_payment", this.data.day_payment);
       }
+
+
       REQUEST_DATA.append("address[location]", this.place);
 
       REQUEST_DATA.append("address[lat]", this.Latitude);
       REQUEST_DATA.append("address[lng]", this.Longitude);
 
       // Append optional features
-      this.selectedOptionalNames.forEach((item, index) => {
+      this.allFeatures.optional.forEach((item, index) => {
+
+        console.log(item)
+        console.log(this.optionalChoices[index])
         if (item.inputType === "text" || item.inputType === "longText" || item.inputType === "number") {
-
-          if (this.optionalInputs[index]) {
-            REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
-            REQUEST_DATA.append(`features[${index}][choice]`, this.optionalInputs[index]);
-          }
-
-        } else if (item.inputType === "multiChoice") {
-          this.optionalChoices[index]?.forEach((choice, choiceIndex) => {
-
-            // if (choice.id) {
+          REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
+          REQUEST_DATA.append(`features[${index}][choice]`, item.choice);
+        } else if (item.inputType === "radio" || item.inputType === "multiChoice") {
+          item.myChoices.forEach((choice, choiceIndex) => {
             REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
             REQUEST_DATA.append(`features[${index}][choice_id][${choiceIndex}]`, choice.id);
-            // }
-
           });
-        } else if (item.inputType === "radio") {
-
-          console.log("optional item radio single", this.optionalChoices[index])
-
-          // if (choice.id) {
-          REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
-          REQUEST_DATA.append(`features[${index}][choice_id][${this.optionalChoices[index].id}]`, this.optionalChoices[index].id);
-          // }
-
         }
-
       });
 
       // Append required features
-      console.log(this.AllFeatures.required)
-      this.AllFeatures.required.forEach((item, index) => {
-        console.log(this.requiredChoices[index])
+      this.allFeatures.required.forEach((item, index) => {
         if (item.inputType === "text" || item.inputType === "longText" || item.inputType === "number") {
-
-          if (this.requiredInputs[index]) {
-            REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][feature_id]`, item.id);
-            REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][choice]`, this.requiredInputs[index]);
-          }
-
-        }
-
-        else if (item.inputType === "multiChoice") {
-          this.requiredChoices[index]?.forEach((choice, choiceIndex) => {
-
-            // if (choice.id) {
-            REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][feature_id]`, item.id);
-            REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][choice_id][${choiceIndex}]`, choice.id);
-            // }
-
+          REQUEST_DATA.append(`features[${index + this.allFeatures.optional.length}][feature_id]`, item.id);
+          REQUEST_DATA.append(`features[${index + this.allFeatures.optional.length}][choice]`, item.choice);
+        } else if (item.inputType === "radio" || item.inputType === "multiChoice") {
+          item.myChoices.forEach((choice, choiceIndex) => {
+            REQUEST_DATA.append(`features[${index + this.allFeatures.optional.length}][feature_id]`, item.id);
+            REQUEST_DATA.append(`features[${index + this.allFeatures.optional.length}][choice_id][${choiceIndex}]`, choice.id);
           });
         }
-
-        else if (item.inputType === "radio") {
-
-          console.log("required item radio single", this.requiredChoices[index])
-
-          // if (choice.id) {
-          REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][feature_id]`, item.id);
-          REQUEST_DATA.append(`features[${index + this.AllFeatures.optional.length}][choice_id][${this.requiredChoices[index].id}]`, this.requiredChoices[index].id);
-          // }
-
-        }
-
-
-
       });
 
       try {
         await this.$axios({
           method: "POST",
-          url: `transports`,
+          url: `equipements/${this.$route.params.id}`,
+          params: {
+            subCategory: `${this.sub_inner_list.id}`
+          },
           data: REQUEST_DATA,
         });
         this.isWaitingRequest = false;
-        this.$message.success(this.$t("MESSAGES.addedSuccessfully"));
-        this.$router.push({ path: "/transport/all" });
+        this.$message.success(this.$t("MESSAGES.editedSuccessfully"));
+        this.$router.push({ path: "/equipments/all" });
       } catch (error) {
         this.isWaitingRequest = false;
         this.$message.error(error.response.data.message);
@@ -782,13 +717,6 @@ export default {
       }
     },
 
-    getWeightsAndCategories(item) {
-      console.log(item)
-      this.weights = item.weights;
-      this.categories = item.categories;
-      this.GetFeatures();
-    },
-
     async getAllCategories() {
       try {
         let res = await this.$axios({
@@ -803,6 +731,27 @@ export default {
       }
     },
 
+    getSub(item) {
+      console.log(item)
+      this.sub_list = '';
+      this.sub_inner_list = '';
+      this.optionalInputs = [];
+      this.optionalChoices = [];
+      this.requiredInputs = [];
+      this.requiredChoices = [];
+      this.sub_cat = item.categories;
+    },
+
+    get_inner_Sub(item) {
+      console.log(item)
+      this.sub_inner_list = '';
+      this.optionalInputs = [];
+      this.optionalChoices = [];
+      this.requiredInputs = [];
+      this.requiredChoices = [];
+      this.sub_inner_cat = item.subCategories;
+    },
+
     // GetFeatures
 
     async GetFeatures() {
@@ -811,10 +760,53 @@ export default {
           method: "GET",
           url: `features`,
           params: {
-            transportType: `${this.data.transport_type_id.id}`
+            subCategory: `${this.sub_inner_list.id}`
           }
         });
-        this.AllFeatures = res.data.data;
+        this.allFeatures = res.data.data;
+        console.log(res.data.data);
+      } catch (error) {
+        this.loading = false;
+        console.log(error.response.data.message);
+      }
+    },
+
+
+    // get data to edit
+
+    async GetDataToEdit() {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: `equipements/${this.$route.params.id}`,
+        });
+        this.data.id_imge.path = res.data.data?.images[0];
+        this.data.liecence_image.path = res.data.data?.images[1];
+        this.data.front_image.path = res.data.data?.images[2];
+        this.data.back_image.path = res.data.data?.images[3];
+        this.data.back_5.path = res.data.data?.images[4];
+        this.data.back_6.path = res.data.data?.images[5];
+        this.data.name = res.data.data.name;
+        this.data.price = res.data.data.price;
+        this.data.is_available = res.data.data.isAvailableObject;
+
+        this.data.available_number = res.data.data.availableNumber;
+        this.data.is_transport = res.data.data.isTransportObject;
+
+        this.data.is_payment = res.data.data.isPaymentObject;
+        this.data.min_payment = res.data.data.minPayment;
+        this.data.day_payment = res.data.data.dayPayment;
+        this.data.transport_type_id = res.data.data.transportType;
+
+        this.main_list = res.data.data.superCategory;
+        this.sub_list = res.data.data.category;
+        this.sub_inner_list = res.data.data.subCategory;
+
+        this.place = res.data.data.fullAddress.location;
+        this.Latitude = res.data.data.fullAddress.lat;
+        this.Longitude = res.data.data.fullAddress.lng;
+        this.videoLink = res.data.data.video;
+        this.allFeatures = res.data.data.allFeatures;
         console.log(res.data.data);
       } catch (error) {
         this.loading = false;
@@ -826,32 +818,17 @@ export default {
 
   async created() {
 
-    if (localStorage.getItem('main_type') == 'equipement') {
+  if (localStorage.getItem('main_type') == 'transport') {
       this.$router.push('/home')
     }
     // Start:: Fire Methods
     this.getAllTransport();
     this.getAllCategories();
+    this.GetDataToEdit();
     // End:: Fire Methods
+
+
+
   },
 };
 </script>
-
-
-<style scoped lang="scss">
-h3 {
-  font-weight: 600;
-  text-align: center;
-  margin: 20px 0;
-}
-
-button.show {
-  min-width: 250px;
-  background: #000;
-  color: #FFF;
-  padding: 10px 0;
-  max-width: 300px;
-  margin: auto;
-  border-radius: 10px;
-}
-</style>

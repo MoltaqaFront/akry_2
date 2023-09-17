@@ -123,6 +123,14 @@ export default {
 
     // Start:: Resend Verification Code
     async resendVerificationCode() {
+
+      this.timerCount = 60;
+
+      setTimeout(() => {
+        this.timerCount -= 1;
+        this.countDown();
+      }, 1000);
+
       const REQUEST_DATA = new FormData();
       // Start:: Append Request Data
       REQUEST_DATA.append("phone", this.getAuthenticatedUserData.phone);

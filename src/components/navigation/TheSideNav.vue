@@ -34,17 +34,18 @@
         <!-- @openChange="onOpenChange" -->
         <a-menu style="width: 100%" mode="inline" :open-keys="openKeys">
           <!-- Start:: Side Nav Tab -->
-          <a-sub-menu v-for="item in sideNavbarList" :key="item.key" :data-type="!item.children ? 'single_route' : ''">
+
+          <a-sub-menu v-for="item in filteredList" :key="item.key" :data-type="!item.children ? 'single_route' : ''">
+
             <template v-if="item.children">
               <!-- ========= Start:: Main Tab -->
               <span slot="title">
                 <img :src="item.icon" alt="icon" width="35" height="35" />
                 <span> {{ item.title }} </span>
               </span>
-              <!-- ========= End:: Main Tab -->
 
               <!-- ========= Start:: Nested Tabs -->
-              <a-menu-item v-for="childItem in item.children" :key="childItem.hey">
+              <a-menu-item v-for="childItem in item.children" :key="childItem.key">
                 <button class="text-start w-100" @click="$emit('fireToggleNavDrawerEmit')">
                   <router-link :to="childItem.route">
                     <i class="fad fa-circle"></i>
@@ -103,6 +104,9 @@
       </v-dialog>
       <!-- End:: Logout Confirmation Modal -->
     </div>
+
+
+
     <!-- End:: Side Nav Links -->
   </div>
 </template>
@@ -138,6 +142,42 @@ export default {
       return extractedKeys;
     },
     // End:: Extract Side Nav Keys
+
+    filteredList() {
+      const selectedType = localStorage.getItem('main_type');
+      const otherRoutes = this.sideNavbarList.filter(item => item.key !== 'Equipments' && item.key !== 'transport');
+
+      // Create a function to recursively flatten the menu items
+      function flattenMenuItems(items) {
+        let flattened = [];
+        items.forEach(item => {
+          flattened.push(item);
+          if (item.children) {
+            flattened = flattened.concat(flattenMenuItems(item.children));
+          }
+        });
+        return flattened;
+      }
+
+      if (selectedType === 'equipement') {
+        // Include Equipments and their children
+        return flattenMenuItems([
+          ...this.sideNavbarList.filter(item => item.key === 'Equipments'),
+          ...otherRoutes,
+        ]);
+      } else if (selectedType === 'transport') {
+        // Include Transport and their children
+        return flattenMenuItems([
+          ...this.sideNavbarList.filter(item => item.key === 'transport'),
+          ...otherRoutes,
+        ]);
+      } else {
+        // Handle other cases where selectedType is neither 'equipment' nor 'transport'
+        return otherRoutes; // Only include other routes
+      }
+    }
+
+
   },
 
   data() {
@@ -153,13 +193,56 @@ export default {
           title: this.$t("PLACEHOLDERS.el_equipments"),
           icon: require("@/assets/media/icons/ui_icons/product.svg"),
           route: "/Equipments/all",
-          // hasPermission: false,
         },
         {
           key: "transport",
           title: this.$t("PLACEHOLDERS.transport"),
           icon: require("@/assets/media/icons/ui_icons/car.svg"),
           route: "/transport/all",
+        },
+        {
+          key: "orders",
+          title: this.$t("TITLES.orders"),
+          icon: require("@/assets/media/icons/ui_icons/booking.svg"),
+          route: "/orders/all",
+        },
+        {
+          key: "chat",
+          title: this.$t("PLACEHOLDERS.chat"),
+          icon: require("@/assets/media/icons/ui_icons/messages.svg"),
+          route: "/chat/all",
+        },
+        {
+          key: "wallet",
+          title: this.$t("PLACEHOLDERS.wallet"),
+          icon: require("@/assets/media/icons/ui_icons/service.svg"),
+          route: "/wallet/all",
+        },
+        {
+          key: "about",
+          title: this.$t("PLACEHOLDERS.about"),
+          icon: require("@/assets/media/icons/ui_icons/users.svg"),
+          route: "/about",
+        },
+        {
+          key: "terms",
+          title: this.$t("PLACEHOLDERS.terms"),
+          icon: require("@/assets/media/icons/ui_icons/flag.svg"),
+          route: "/terms",
+          // hasPermission: false,
+        },
+        {
+          key: "privacy",
+          title: this.$t("PLACEHOLDERS.privacy"),
+          icon: require("@/assets/media/icons/ui_icons/cycle_arrows.svg"),
+          route: "/privacy",
+          // hasPermission: false,
+        },
+        {
+          key: "faq",
+          title: this.$t("PLACEHOLDERS.faq"),
+          icon: require("@/assets/media/icons/ui_icons/service_type.svg"),
+          route: "/faq",
           // hasPermission: false,
         },
         {
@@ -169,6 +252,47 @@ export default {
           route: "/contact/create",
           // hasPermission: false,
         },
+        // {
+        //   key: "appContent",
+        //   title: this.$t("SIDENAV.AppContent.title"),
+        //   icon: require("@/assets/media/icons/ui_icons/book_mark.svg"),
+        //   children: [
+        //     {
+        //       key: "about",
+        //       title: this.$t("PLACEHOLDERS.about"),
+        //       icon: require("@/assets/media/icons/ui_icons/users.svg"),
+        //       route: "/about",
+        //     },
+        //     {
+        //       key: "terms",
+        //       title: this.$t("PLACEHOLDERS.terms"),
+        //       icon: require("@/assets/media/icons/ui_icons/flag.svg"),
+        //       route: "/terms",
+        //       // hasPermission: false,
+        //     },
+        //     {
+        //       key: "privacy",
+        //       title: this.$t("PLACEHOLDERS.privacy"),
+        //       icon: require("@/assets/media/icons/ui_icons/cycle_arrows.svg"),
+        //       route: "/privacy",
+        //       // hasPermission: false,
+        //     },
+        //     {
+        //       key: "faq",
+        //       title: this.$t("PLACEHOLDERS.faq"),
+        //       icon: require("@/assets/media/icons/ui_icons/service_type.svg"),
+        //       route: "/faq",
+        //       // hasPermission: false,
+        //     },
+        //     {
+        //       key: "contact",
+        //       title: this.$t("PLACEHOLDERS.contact_us"),
+        //       icon: require("@/assets/media/icons/ui_icons/messages.svg"),
+        //       route: "/contact/create",
+        //       // hasPermission: false,
+        //     },
+        //   ],
+        // },
       ],
       // End:: Side Navbar List
 
@@ -184,6 +308,19 @@ export default {
       logout: "AuthenticationModule/logout",
     }),
     // End:: Vuex Auth Actions
+
+    // Start:: Controle Open Tabs
+    onOpenChange(openKeys) {
+      const latestOpenKey = openKeys.find(
+        (key) => this.openKeys.indexOf(key) === -1
+      );
+      if (this.extractSideNavItemsKeys.indexOf(latestOpenKey) === -1) {
+        this.openKeys = openKeys;
+      } else {
+        this.openKeys = latestOpenKey ? [latestOpenKey] : [];
+      }
+    },
+    // End:: Controle Open Tabs
 
   },
 
