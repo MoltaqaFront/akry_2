@@ -204,12 +204,12 @@ export default {
       return [
         {
           id: 1,
-          name: this.$t("STATUS.isAvailable"),
+          name: this.$t("STATUS.active"),
           value: 1,
         },
         {
           id: 2,
-          name: this.$t("STATUS.is_not_Available"),
+          name: this.$t("STATUS.notActive"),
           value: 0,
         },
         {
@@ -348,7 +348,6 @@ export default {
           page: pagenationValue,
         },
       });
-
       // Scroll To Screen's Top After Get Products
       document.body.scrollTop = 0; // For Safari
       document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera

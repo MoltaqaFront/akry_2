@@ -60,9 +60,11 @@
         </div>
 
         <div class="title_route_wrapper">
+
           <router-link to="/equipments/create">
             {{ $t("PLACEHOLDERS.add_equipment") }}
           </router-link>
+
         </div>
       </div>
       <!--  =========== End:: Table Title =========== -->
@@ -107,6 +109,13 @@
           <h6 v-else> {{ item.isTransport ? $t("PLACEHOLDERS.yes") : $t("PLACEHOLDERS.no") }} </h6>
         </template>
         <!-- End:: isTransport -->
+
+        <!-- Start:: Name -->
+        <template v-slot:[`item.transportType.name`]="{ item }">
+          <h6 class="text-danger" v-if="!item.transportType.name"> {{ $t("TABLES.noData") }} </h6>
+          <h6 v-else> {{ item.transportType.name }} </h6>
+        </template>
+        <!-- End:: Name -->
 
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
@@ -274,7 +283,7 @@ export default {
         },
         {
           text: this.$t("PLACEHOLDERS.Available_number"),
-          value: "availableNumber",
+          value: "count",
           align: "center",
           sortable: false,
         },

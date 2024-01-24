@@ -17,21 +17,20 @@
           <div class="group">
             <!-- ********** Start:: Notification Button ********** -->
             <div class="user_notification_content_wrapper">
-              <!-- <a-badge
-                :count="notificationsData.unreadNotifications"
-                :overflow-count="9"
-              >
-                <button
-                  aria-label="notification_btn"
-                  class="notification_btn"
-                  @click.stop="
-                    toggleNotificationsMenu();
-                    getNotifications();
-                  "
-                >
+              <!-- <a-badge :count="notificationCount" :overflow-count="9">
+                <button aria-label="notification_btn" class="notification_btn" @click.stop="
+                  toggleNotificationsMenu();
+                ">
                   <i class="fal fa-bell"></i>
                 </button>
               </a-badge> -->
+
+              <v-badge :content="notificationCount" floating>
+                <div class="notification_btn" @click.stop="
+                  toggleNotificationsMenu();">
+                  <i class=" fal fa-bell"></i>
+                </div>
+              </v-badge>
 
             </div>
             <!-- ********** End:: Notification Button ********** -->
@@ -135,6 +134,8 @@ export default {
 
   data() {
     return {
+      receivedMessages: [],
+      notificationCount: 1,
       // Start:: Notifications Menu Control Data
       notificationsMenuIsOpen: false,
       // End:: Notifications Menu Control Data
@@ -155,8 +156,10 @@ export default {
 
     // Start:: Toggle Notifications Menu
     toggleNotificationsMenu() {
-      this.notificationsMenuIsOpen = !this.notificationsMenuIsOpen;
-      this.chatsDrawerIsOpen = false;
+      // this.notificationsMenuIsOpen = !this.notificationsMenuIsOpen;
+      // this.chatsDrawerIsOpen = false;
+      this.$router.push("/notification");
+
     },
     // End:: Toggle Notifications Menu
 
@@ -175,9 +178,30 @@ export default {
       }
     },
     // End:: Notification Redirect
+
+    async getData() {
+      try {
+        let res = await this.$axios({
+          method: "GET",
+          url: "auth/notifications",
+        });
+        console.log("All Data ==>", res.data.data);
+        this.notificationCount = res.data.data.newNotificationCount;
+      } catch (error) {
+        this.loading = false;
+        console.log(error.response.data.message);
+      }
+    },
   },
 
   created() {
+
+    this.getData();
+
+    navigator.serviceWorker.addEventListener('message', event => {
+      this.notificationCount++;
+    });
+
     // Start:: Fire Methods
     window.addEventListener("click", () => {
       this.notificationsMenuIsOpen = false;
@@ -186,3 +210,27 @@ export default {
   },
 };
 </script>
+
+
+<style scoped lang="scss">
+#custom-badge {
+  >span {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+  }
+}
+
+.notification_btn {
+  cursor: pointer;
+
+  i {
+    font-size: 25px;
+  }
+}
+
+.v-badge__badge.primary {
+  background: #627950 !important;
+
+}
+</style>

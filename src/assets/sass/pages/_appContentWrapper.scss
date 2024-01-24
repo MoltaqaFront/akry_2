@@ -50,14 +50,14 @@
         position: absolute;
         top: 25px;
         right: 25px;
-  
+
         svg,
         i {
           color: var(--white_clr);
           font-size: 25px;
           @include transitioning(0.4s);
         }
-  
+
         &:hover {
           svg,
           i {
@@ -86,7 +86,7 @@
         .home_route {
           border-bottom: none;
         }
-        .side_routes_wrapper  {
+        .side_routes_wrapper {
           .ant-menu {
             .ant-menu-submenu {
               border-bottom: none;
@@ -118,3 +118,4 @@
 
   // End:: Media Queries
 }
+

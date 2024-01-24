@@ -16,35 +16,13 @@
             <h3 class="text-center">{{ $t('PLACEHOLDERS.equipment_images') }}</h3>
           </div>
 
-          <base-image-upload-input col="4" identifier="id_imge" :preSelectedImage="data.id_imge.path"
-            @selectImage="selectImage" disabled />
-          <!-- End:: Logo Input -->
+          <div class="row jf-center">
 
-          <!-- Start:: Cover Input -->
-          <base-image-upload-input col="4" identifier="liecence_image" @selectImage="selectImage"
-            :preSelectedImage="data.liecence_image.path" disabled />
-          <!-- End:: Cover Input -->
-
-          <!-- Start:: Commerical Profile Image Input -->
-          <base-image-upload-input col="4" identifier="front_image" @selectImage="selectImage"
-            :preSelectedImage="data.front_image.path" disabled />
-          <!-- End:: Commerical Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="back_image" @selectImage="selectImage"
-            :preSelectedImage="data.back_image.path" disabled />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_5" @selectImage="selectImage"
-            :preSelectedImage="data.back_5.path" disabled />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_6" @selectImage="selectImage"
-            :preSelectedImage="data.back_6.path" disabled />
-          <!-- End:: Tax Profile Image Input -->
-
+            <div class="eq-img-container col-md-2" v-for="(image, index) in images">
+              <img :src="image" />
+              <!-- <button class="remove-eq-img" @click="removeImage(index)">✘</button> -->
+            </div>
+          </div>
 
           <!-- Start:: Name Input -->
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.name')" v-model.trim="data.name" disabled />
@@ -104,11 +82,11 @@
               <base-input class="col-lg-6 col-12" type="text"
                 v-if="item.inputType === 'text' || item.inputType === 'longText' || item.inputType === 'number'"
                 :placeholder="item.name" v-model="item.choice"
-                @input="updateChoiceAndInput(item, index, $event.target.value)" disabled />
+                @input="updateChoiceAndInput(item, index, $event.target.value)" disabled required />
 
               <base-select-input class="col-lg-6 col-12"
                 v-if="item.inputType === 'radio' || item.inputType === 'multiChoice'" :optionsList="item.choices"
-                :placeholder="item.name" v-model="item.myChoices" disabled multiple />
+                :placeholder="item.name" v-model="item.myChoices" disabled multiple required />
             </div>
           </div>
 
@@ -480,17 +458,13 @@ export default {
           method: "GET",
           url: `equipements/${this.$route.params.id}`,
         });
-        this.data.id_imge.path = res.data.data?.images[0];
-        this.data.liecence_image.path = res.data.data?.images[1];
-        this.data.front_image.path = res.data.data?.images[2];
-        this.data.back_image.path = res.data.data?.images[3];
-        this.data.back_5.path = res.data.data?.images[4];
-        this.data.back_6.path = res.data.data?.images[5];
+        this.images = res.data.data?.images;
+
         this.data.name = res.data.data.name;
         this.data.price = res.data.data.price;
         this.data.is_available = res.data.data.isAvailableObject;
 
-        this.data.available_number = res.data.data.availableNumber;
+        this.data.available_number = res.data.data.count;
         this.data.is_transport = res.data.data.isTransportObject;
 
         this.data.is_payment = res.data.data.isPaymentObject;
@@ -518,7 +492,7 @@ export default {
 
   async created() {
 
-  if (localStorage.getItem('main_type') == 'transport') {
+    if (localStorage.getItem('main_type') == 'transport') {
       this.$router.push('/home')
     }
     // Start:: Fire Methods
@@ -529,3 +503,66 @@ export default {
   },
 };
 </script>
+<style scoped lang="scss">
+h3 {
+  font-weight: 600;
+  text-align: center;
+  margin: 20px 0;
+}
+
+button.show {
+  min-width: 250px;
+  background: #000;
+  color: #FFF;
+  padding: 10px 0;
+  max-width: 300px;
+  margin: auto;
+  border-radius: 10px;
+}
+
+.eq-img-container {
+  height: 200px;
+  position: relative;
+}
+
+.eq-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.remove-eq-img {
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  font-size: 20px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 0px 10px;
+  border-radius: 50%;
+}
+
+.eq-input-img input[type="file"] {
+  display: none;
+}
+
+.eq-input-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.eq-input-img label {
+  font-size: 30px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.jf-center {
+  justify-content: center;
+}
+</style>

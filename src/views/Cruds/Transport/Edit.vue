@@ -16,35 +16,22 @@
             <h3 class="text-center">{{ $t('PLACEHOLDERS.equipment_images') }}</h3>
           </div>
 
-          <base-image-upload-input col="4" identifier="id_imge" :preSelectedImage="data.id_imge.path"
-            @selectImage="selectImage" />
-          <!-- End:: Logo Input -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="eq-input-img">
+                <label styleType="primary_btn">
+                  <input multiple type="file" @change="onFileChange">
+                  {{ $t('PLACEHOLDERS.add_images') }}
+                </label>
 
-          <!-- Start:: Cover Input -->
-          <base-image-upload-input col="4" identifier="liecence_image" @selectImage="selectImage"
-            :preSelectedImage="data.liecence_image.path" required />
-          <!-- End:: Cover Input -->
+              </div>
+            </div>
 
-          <!-- Start:: Commerical Profile Image Input -->
-          <base-image-upload-input col="4" identifier="front_image" @selectImage="selectImage"
-            :preSelectedImage="data.front_image.path" required />
-          <!-- End:: Commerical Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="back_image" @selectImage="selectImage"
-            :preSelectedImage="data.back_image.path" required />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_5" @selectImage="selectImage"
-            :preSelectedImage="data.back_5.path" required />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_6" @selectImage="selectImage"
-            :preSelectedImage="data.back_6.path" required />
-          <!-- End:: Tax Profile Image Input -->
-
+            <div class="eq-img-container col-md-2" v-for="(image, index) in images">
+              <img :src="image" />
+              <button class="remove-eq-img" type="button" @click="removeImage(index)">✘</button>
+            </div>
+          </div>
 
           <!-- Start:: Name Input -->
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.name')" v-model.trim="data.name" required />
@@ -122,15 +109,22 @@
 
           </div>
 
-
           <!-- Render required features -->
+
+          <!-- <button type="button" class="show" @click="showOptionalFeatures = true" v-if="AllFeatures.optional.length">
+            {{ $t('PLACEHOLDERS.show_Optional_Features') }}
+          </button> -->
+
+          <!-- main select -->
+          <base-select-input v-if="AllFeatures.optional.length" col="12" :optionsList="AllFeatures.optional"
+            :placeholder="$t('PLACEHOLDERS.Optional_Features')" v-model="selectedOptionalNames" multiple />
 
           <!-- Render optional features -->
           <div>
-            <h3 v-if="AllFeatures.optional">{{ $t('PLACEHOLDERS.Optional_Features') }}</h3>
+            <h3>{{ $t('PLACEHOLDERS.Optional_Features') }}</h3>
             <div class="row">
 
-              <div class="col-lg-6 col-12" v-for="(item, index) in AllFeatures.optional" :key="'a' + index">
+              <div class="col-lg-6 col-12" v-for="(item, index) in selectedOptionalNames" :key="'a' + index">
 
                 <div v-if="item.inputType === 'text' || item.inputType === 'longText' || item.inputType === 'number'">
 
@@ -147,7 +141,6 @@
                   <base-select-input :optionsList="item.choices" :placeholder="item.name" v-model="item.myChoices"
                     required />
                 </div>
-
 
               </div>
 
@@ -236,12 +229,12 @@ export default {
       return [
         {
           id: 0,
-          name: this.$t('STATUS.is_not_Available'),
+          name: this.$t('STATUS.notActive'),
           value: 0
         },
         {
           id: 1,
-          name: this.$t('STATUS.isAvailable'),
+          name: this.$t('STATUS.active'),
           value: 1
         }
       ]
@@ -374,12 +367,75 @@ export default {
       requiredInputs: [],
       requiredChoices: [],
 
-      videoLink: ''
+      videoLink: '',
+
+      selectedOptionalNames: [],
+      showOptionalFeatures: false,
+
+      maxImageCount: 7,
+
+      images: [],
+      newImages: [],
 
     };
   },
 
   methods: {
+
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      this.selectedImages = e.target.files;
+      if (!files.length) return;
+
+      // Check if the number of selected files exceeds the maximum count
+      if (this.images.length + this.newImages.length + files.length > this.maxImageCount) {
+        this.$message.error(this.$t("VALIDATION.Images_Upload"));
+        e.target.value = ''; // Clear the file input
+        return;
+      }
+
+      // Add newly uploaded images to the newImages array
+      for (let i = 0; i < files.length; i++) {
+        const file = files[i];
+        this.newImages.push(file);
+        // Optionally, you can also push the file URL to the images array for immediate display
+        // this.images.push(URL.createObjectURL(file));
+      }
+
+      this.createImage(files);
+    },
+    createImage(files) {
+      var vm = this;
+      for (var index = 0; index < files.length; index++) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          const imageUrl = event.target.result;
+          vm.images.push(imageUrl);
+        }
+        reader.readAsDataURL(files[index]);
+      }
+    },
+    removeImage(index) {
+      this.images.splice(index, 1);
+      this.confirmDeleteItem(index);
+    },
+
+    async confirmDeleteItem(index) {
+      const REQUEST_DATA = new FormData();
+      // Start:: Append Request Data
+      REQUEST_DATA.append("index", index);
+      try {
+        await this.$axios({
+          method: "POST",
+          url: `transports-delete-image/${this.$route.params.id}`,
+          data: REQUEST_DATA
+        });
+        this.$message.success(this.$t("MESSAGES.deletedSuccessfully"));
+      } catch (error) {
+        this.dialogDelete = false;
+        this.$message.error(error.response.data.message);
+      }
+    },
 
     // Start:: Select Upload Image
 
@@ -409,14 +465,15 @@ export default {
     // Start:: validate Form Inputs
     validateFormInputs() {
       this.isWaitingRequest = true;
-      if (!this.data.back_image.path && !this.data.id_imge.path && !this.data.liecence_image.path
-        && !this.data.front_image.path && !this.data.back_5.path && !this.data.back_6.path
-      ) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.one_image"));
-        return;
-      }
-      else if (!this.data.name) {
+      // if (!this.data.back_image.path && !this.data.id_imge.path && !this.data.liecence_image.path
+      //   && !this.data.front_image.path && !this.data.back_5.path && !this.data.back_6.path
+      // ) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.one_image"));
+      //   return;
+      // }
+      // else
+      if (!this.data.name) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.name"));
         return;
@@ -492,11 +549,11 @@ export default {
         this.$message.error(this.$t("VALIDATION.Categories"));
         return;
       }
-      else if (!this.file && !this.videoLink) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.video"));
-        return;
-      }
+      // else if (!this.file && !this.videoLink) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.video"));
+      //   return;
+      // }
       else if (!this.place) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.place"));
@@ -509,6 +566,31 @@ export default {
     },
     // End:: validate Form Inputs
 
+    dataURLtoFile(dataURL, filename) {
+      // Check if dataURL is a string and contains a comma
+      if (typeof dataURL !== 'string' || !dataURL.includes(',')) {
+        console.error("Invalid data URL:", dataURL);
+        return null; // Or handle it in your specific way
+      }
+
+      const arr = dataURL.split(',');
+      const mimeMatch = arr[0].match(/:(.*?);/);
+      if (mimeMatch && mimeMatch.length >= 2) {
+        const mime = mimeMatch[1];
+        const bstr = atob(arr[1]);
+        let n = bstr.length;
+        const u8arr = new Uint8Array(n);
+        while (n--) {
+          u8arr[n] = bstr.charCodeAt(n);
+        }
+        return new File([u8arr], filename, { type: mime });
+      } else {
+        // Handle the case where the MIME type is not found
+        console.error("MIME type not found in data URL:", dataURL);
+        return null; // Or handle it in your specific way
+      }
+    },
+
     // Start:: Submit Form
     async submitForm() {
       const REQUEST_DATA = new FormData();
@@ -518,23 +600,9 @@ export default {
       REQUEST_DATA.append("price_in_city", this.data.price_in_city);
       REQUEST_DATA.append("price_out_city", this.data.price_out_city);
 
-      if (this.data.id_imge.file) {
-        REQUEST_DATA.append("images[0]", this.data.id_imge.file);
-      }
-      if (this.data.liecence_image.file) {
-        REQUEST_DATA.append("images[1]", this.data.liecence_image.file);
-      }
-      if (this.data.front_image.file) {
-        REQUEST_DATA.append("images[2]", this.data.front_image.file);
-      }
-      if (this.data.back_image.file) {
-        REQUEST_DATA.append("images[3]", this.data.back_image.file);
-      }
-      if (this.data.back_5.file) {
-        REQUEST_DATA.append("images[4]", this.data.back_5.file);
-      }
-      if (this.data.back_6.file) {
-        REQUEST_DATA.append("images[5]", this.data.back_6.file);
+      // Append newly uploaded images to the FormData
+      for (let index = 0; index < this.newImages.length; index++) {
+        REQUEST_DATA.append(`images[${index}]`, this.newImages[index]);
       }
 
       if (this.file) {
@@ -547,7 +615,7 @@ export default {
       REQUEST_DATA.append("categories[0]", this.category_equip?.id);
 
       REQUEST_DATA.append("is_available", this.data.is_available?.id);
-      REQUEST_DATA.append("available_number", this.data.available_number);
+      REQUEST_DATA.append("count", this.data.available_number);
       REQUEST_DATA.append("is_transport", this.data.is_transport?.id);
       REQUEST_DATA.append("is_payment", this.data.is_payment?.id);
 
@@ -561,13 +629,15 @@ export default {
       REQUEST_DATA.append("address[lng]", this.Longitude);
 
       // Append optional features
-      this.AllFeatures.optional.forEach((item, index) => {
+      this.selectedOptionalNames.forEach((item, index) => {
         if (item.inputType === "text" || item.inputType === "longText" || item.inputType === "number") {
+          console.log('text', item)
           REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
           REQUEST_DATA.append(`features[${index}][choice]`, item.choice);
         }
         else if (item.inputType === "multiChoice") {
           item.myChoices?.forEach((choice, choiceIndex) => {
+            console.log('multiChoice', choice)
             REQUEST_DATA.append(`features[${index}][feature_id]`, item.id);
             REQUEST_DATA.append(`features[${index}][choice_id][${choiceIndex}]`, choice.id);
           });
@@ -831,12 +901,15 @@ export default {
           method: "GET",
           url: `transports/${this.$route.params.id}`,
         });
-        this.data.id_imge.path = res.data.data?.images[0];
-        this.data.liecence_image.path = res.data.data?.images[1];
-        this.data.front_image.path = res.data.data?.images[2];
-        this.data.back_image.path = res.data.data?.images[3];
-        this.data.back_5.path = res.data.data?.images[4];
-        this.data.back_6.path = res.data.data?.images[5];
+        // this.data.id_imge.path = res.data.data?.images[0];
+        // this.data.liecence_image.path = res.data.data?.images[1];
+        // this.data.front_image.path = res.data.data?.images[2];
+        // this.data.back_image.path = res.data.data?.images[3];
+        // this.data.back_5.path = res.data.data?.images[4];
+        // this.data.back_6.path = res.data.data?.images[5];
+
+        this.images = res.data.data?.images;
+
         this.data.name = res.data.data.name;
         this.data.price_in_city = res.data.data.priceInCity;
         this.data.price_out_city = res.data.data.priceOutCity;
@@ -846,7 +919,7 @@ export default {
 
         this.data.is_available = res.data.data.isAvailableObject;
 
-        this.data.available_number = res.data.data.availableNumber;
+        this.data.available_number = res.data.data.count;
         this.data.is_transport = res.data.data.isTransportObject;
 
         this.data.is_payment = res.data.data.isPaymentObject;
@@ -859,6 +932,17 @@ export default {
         this.Longitude = res.data.data.fullAddress.lng;
         this.videoLink = res.data.data.video;
         this.AllFeatures = res.data.data.allFeatures;
+
+
+        this.AllFeatures.optional.forEach((item, index) => {
+          console.log(item.isUsed)
+
+          if (item.isUsed) {
+            this.selectedOptionalNames.push(item)
+          }
+        })
+
+
         console.log(res.data.data);
       } catch (error) {
         this.loading = false;
@@ -883,6 +967,8 @@ export default {
   },
 };
 </script>
+
+
 <style scoped lang="scss">
 h3 {
   font-weight: 600;
@@ -898,5 +984,47 @@ button.show {
   max-width: 300px;
   margin: auto;
   border-radius: 10px;
+}
+
+.eq-img-container {
+  height: 200px;
+  position: relative;
+}
+
+.eq-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.remove-eq-img {
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  font-size: 20px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 0px 10px;
+  border-radius: 50%;
+}
+
+.eq-input-img input[type="file"] {
+  display: none;
+}
+
+.eq-input-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.eq-input-img label {
+  font-size: 30px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>

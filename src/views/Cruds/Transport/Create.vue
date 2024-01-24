@@ -16,34 +16,22 @@
             <h3 class="text-center">{{ $t('PLACEHOLDERS.equipment_images') }}</h3>
           </div>
 
-          <base-image-upload-input col="4" identifier="id_imge" :preSelectedImage="data.id_imge.path"
-            @selectImage="selectImage" />
-          <!-- End:: Logo Input -->
+          <div class="row">
+            <div class="col-md-12">
+              <div class="eq-input-img">
+                <label styleType="primary_btn">
+                  <input multiple type="file" @change="onFileChange">
+                  {{ $t('PLACEHOLDERS.add_images') }}
+                </label>
 
-          <!-- Start:: Cover Input -->
-          <base-image-upload-input col="4" identifier="liecence_image" @selectImage="selectImage"
-            :preSelectedImage="data.liecence_image.path" required />
-          <!-- End:: Cover Input -->
+              </div>
+            </div>
 
-          <!-- Start:: Commerical Profile Image Input -->
-          <base-image-upload-input col="4" identifier="front_image" @selectImage="selectImage"
-            :preSelectedImage="data.front_image.path" required />
-          <!-- End:: Commerical Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="back_image" @selectImage="selectImage"
-            :preSelectedImage="data.back_image.path" required />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_5" @selectImage="selectImage"
-            :preSelectedImage="data.back_5.path" required />
-          <!-- End:: Tax Profile Image Input -->
-
-          <!-- Start:: Tax Profile Image Input -->
-          <base-image-upload-input col="4" identifier="image_6" @selectImage="selectImage"
-            :preSelectedImage="data.back_6.path" required />
-          <!-- End:: Tax Profile Image Input -->
+            <div class="eq-img-container col-md-2" v-for="(image, index) in images">
+              <img :src="image" />
+              <button class="remove-eq-img" @click="removeImage(index)" type="button">✘</button>
+            </div>
+          </div>
 
 
           <!-- Start:: Name Input -->
@@ -140,7 +128,6 @@
             </div>
 
           </div>
-
 
 
           <div class="input_wrapper top_label">
@@ -361,10 +348,43 @@ export default {
       requiredInputs: [],
       requiredChoices: [],
 
+      maxImageCount: 6,
+
+      images: [],
+
     };
   },
 
   methods: {
+
+    onFileChange(e) {
+      var files = e.target.files || e.dataTransfer.files;
+      this.selectedImages = e.target.files;
+      if (!files.length) return;
+
+      // Check if the number of selected files exceeds the maximum count
+      if (this.images.length + files.length > this.maxImageCount) {
+        this.$message.error(this.$t("VALIDATION.Images_Upload"));
+        e.target.value = ''; // Clear the file input
+        return;
+      }
+
+      this.createImage(files);
+    },
+    createImage(files) {
+      var vm = this;
+      for (var index = 0; index < files.length; index++) {
+        var reader = new FileReader();
+        reader.onload = function (event) {
+          const imageUrl = event.target.result;
+          vm.images.push(imageUrl);
+        }
+        reader.readAsDataURL(files[index]);
+      }
+    },
+    removeImage(index) {
+      this.images.splice(index, 1)
+    },
 
     // Start:: Select Upload Image
 
@@ -388,20 +408,19 @@ export default {
     },
     // End:: Select Upload Image
 
-
     // End:: Select Upload Image
 
     // Start:: validate Form Inputs
     validateFormInputs() {
       this.isWaitingRequest = true;
-      if (!this.data.back_image.file && !this.data.id_imge.file && !this.data.liecence_image.file
-        && !this.data.front_image.file && !this.data.back_5.file && !this.data.back_6.file
-      ) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.one_image"));
-        return;
-      }
-      else if (!this.data.name) {
+      // if (!this.data.back_image.file && !this.data.id_imge.file && !this.data.liecence_image.file
+      //   && !this.data.front_image.file && !this.data.back_5.file && !this.data.back_6.file
+      // ) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.one_image"));
+      //   return;
+      // }
+      if (!this.data.name) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.name"));
         return;
@@ -477,11 +496,11 @@ export default {
         this.$message.error(this.$t("VALIDATION.Categories"));
         return;
       }
-      else if (!this.file) {
-        this.isWaitingRequest = false;
-        this.$message.error(this.$t("VALIDATION.video"));
-        return;
-      }
+      // else if (!this.file) {
+      //   this.isWaitingRequest = false;
+      //   this.$message.error(this.$t("VALIDATION.video"));
+      //   return;
+      // }
       else if (!this.place) {
         this.isWaitingRequest = false;
         this.$message.error(this.$t("VALIDATION.place"));
@@ -494,6 +513,18 @@ export default {
     },
     // End:: validate Form Inputs
 
+    dataURLtoFile(dataURL, filename) {
+      const arr = dataURL.split(',');
+      const mime = arr[0].match(/:(.*?);/)[1];
+      const bstr = atob(arr[1]);
+      let n = bstr.length;
+      const u8arr = new Uint8Array(n);
+      while (n--) {
+        u8arr[n] = bstr.charCodeAt(n);
+      }
+      return new File([u8arr], filename, { type: mime });
+    },
+
     // Start:: Submit Form
     async submitForm() {
       const REQUEST_DATA = new FormData();
@@ -502,31 +533,18 @@ export default {
       REQUEST_DATA.append("price_in_city", this.data.price_in_city);
       REQUEST_DATA.append("price_out_city", this.data.price_out_city);
 
-      if (this.data.id_imge.file) {
-        REQUEST_DATA.append("images[0]", this.data.id_imge.file);
-      }
-      if (this.data.liecence_image.file) {
-        REQUEST_DATA.append("images[1]", this.data.liecence_image.file);
-      }
-      if (this.data.front_image.file) {
-        REQUEST_DATA.append("images[2]", this.data.front_image.file);
-      }
-      if (this.data.back_image.file) {
-        REQUEST_DATA.append("images[3]", this.data.back_image.file);
-      }
-      if (this.data.back_5.file) {
-        REQUEST_DATA.append("images[4]", this.data.back_5.file);
-      }
-      if (this.data.back_6.file) {
-        REQUEST_DATA.append("images[5]", this.data.back_6.file);
-      }
+      for (let index = 0; index < this.images.length; index++) {
+        REQUEST_DATA.append(`images[${index}]`, this.dataURLtoFile(this.images[index], `image${index}.png`));
+      };
 
-      REQUEST_DATA.append("video", this.file);
+      if (this.file) {
+        REQUEST_DATA.append("video", this.file);
+      }
       REQUEST_DATA.append("transport_type_id", this.data.transport_type_id?.id);
       REQUEST_DATA.append("weights[0]", this.weight_equip?.id);
       REQUEST_DATA.append("categories[0]", this.category_equip?.id);
       REQUEST_DATA.append("is_available", this.data.is_available?.value);
-      REQUEST_DATA.append("available_number", this.data.available_number);
+      REQUEST_DATA.append("count", this.data.available_number);
       REQUEST_DATA.append("is_transport", this.data.is_transport?.value);
       REQUEST_DATA.append("is_payment", this.data.is_payment?.value);
 
@@ -539,7 +557,7 @@ export default {
       REQUEST_DATA.append("address[lat]", this.Latitude);
       REQUEST_DATA.append("address[lng]", this.Longitude);
 
-      // Append optional features
+      // Append optional features 
       this.selectedOptionalNames.forEach((item, index) => {
         if (item.inputType === "text" || item.inputType === "longText" || item.inputType === "number") {
 
@@ -853,5 +871,47 @@ button.show {
   max-width: 300px;
   margin: auto;
   border-radius: 10px;
+}
+
+.eq-img-container {
+  height: 200px;
+  position: relative;
+}
+
+.eq-img-container img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 15px;
+}
+
+.remove-eq-img {
+  position: absolute;
+  top: -7px;
+  left: 8px;
+  font-size: 20px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 0px 10px;
+  border-radius: 50%;
+}
+
+.eq-input-img input[type="file"] {
+  display: none;
+}
+
+.eq-input-img {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 30px;
+}
+
+.eq-input-img label {
+  font-size: 30px;
+  background: var(--main_theme_clr);
+  color: white;
+  padding: 10px 15px;
+  border-radius: 8px;
+  cursor: pointer;
 }
 </style>

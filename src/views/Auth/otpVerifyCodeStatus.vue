@@ -203,8 +203,8 @@ export default {
           phone: res.data.data.user.phone,
           role: res.data.data.user.role,
         });
-        this.$router.replace("/home");
         location.reload()
+        this.$router.replace("/home");
 
       } catch (error) {
         this.isWaitingRequest = false;

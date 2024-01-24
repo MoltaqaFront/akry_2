@@ -920,10 +920,32 @@
     "Optional_Features": "Optional Features",
     "show_Optional_Features": "Show Optional Features",
     "required": "required",
-    "answer_reply": "Reply (repeat transfer)"
+    "answer_reply": "Reply (repeat transfer)",
+
+    "users": "Users",
+    "orders": "Orders",
+    "finishedOrders": "Finished Orders",
+    "newOrders": "New Orders",
+    "activeOrders": "Active Orders",
+    "cancelledOrders": "Cancelled Orders",
+    "totalIncome": "Total Income",
+    "todayIncome": "Today Income",
+    "realIncome": "Real Income",
+    "services": "Services",
+    "totalWithdraws": "Total With draws",
+
+    "iban": "Bank Account Number",
+
+    "moving_balance": "The Balance That Has Been Transferred",
+    "no_notification": "No Notification Found",
+    "add_images": "Add Images",
+
+    "reject_reason": "Rejection Reason",
+    "who_reject": "Rejected By"
   },
 
   "VALIDATION": {
+    "Images_Upload": "You cannot enter more than six images",
     "loginSuccess": "Logged In Successfully",
     "loginFailed": "Wrong Login Data",
     "name": "Name Field Cant Be Empty",

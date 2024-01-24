@@ -1,12 +1,12 @@
 <template>
-  <div class="all-con" >
+  <div class="all-con">
     <div class="p-title">
       <h3>{{ title }}</h3>
     </div>
     <div class="p-content">
-      <p>{{ content }}</p>
+      <p v-html="content"></p>
     </div>
-    
+
   </div>
 </template>
 
@@ -20,10 +20,10 @@ export default {
 
   data() {
     return {
-      title:'',
-      content:''
+      title: '',
+      content: ''
     }
-      
+
   },
 
   watch: {
@@ -53,20 +53,19 @@ export default {
 </script>
 <style>
 .all-con {
-    text-align: center;
-    padding: 30px;
+  text-align: center;
+  padding: 30px;
 }
 
 .p-title {
-    margin-bottom: 25px;
+  margin-bottom: 25px;
 }
 
 .p-title h3 {
-    font-size: 37px;
+  font-size: 37px;
 }
 
 .p-content p {
-    font-size: 18px;
+  font-size: 18px;
 }
-
 </style>

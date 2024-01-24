@@ -933,10 +933,33 @@
     "Optional_Features": "الميزات الاختيارية",
     "show_Optional_Features": "إظهار الميزات الاختيارية",
     "required": "الميزات المطلوبة",
-    "answer_reply": "الرد (تكرار النقل)"
+    "answer_reply": "الرد (تكرار النقل)",
+
+    "users": "المستخدمين",
+    "orders": "الطلبات",
+    "finishedOrders": "الطلبات المكتملة",
+    "newOrders": "الطلبات الجديدة",
+    "activeOrders": "الطلبات النشطة",
+    "cancelledOrders": "الطلبات الملغاة",
+    "totalIncome": "إجمالي الدخل",
+    "todayIncome": "دخل اليوم",
+    "realIncome": "الدخل الفعلي",
+    "services": "الخدمات",
+    "totalWithdraws": "إجمالي السحوبات",
+
+    "iban": "رقم الحساب",
+
+    "moving_balance": "الرصيد الذي تم تحويله",
+
+    "no_notification": "لا يوجد اشعارات",
+    "add_images": "رفع الصور",
+
+    "reject_reason":"سبب الرفض",
+    "who_reject":"ملغى بواسطة"
   },
 
   "VALIDATION": {
+    "Images_Upload": "لا يمكن إدخال أكثر من ستة صور",
     "loginSuccess": "تم تسجيل الدخول بنجاح",
     "loginFailed": "بيانات الدخول خاطئة",
     "name": "حقل الإسم لايمكن ان يكون فارغ",
@@ -1013,7 +1036,8 @@
 
     "price_out_city_positive": "حقل السعر خارج المدينة يقبل فقط الأرقام الإيجابية",
     "price_in_city_positive": "حقل السعر داخل المدينة يقبل فقط الأرقام الإيجابية",
-    "number_available_positive": "حقل الأعداد المتاحة يقبل فقط الأرقام الإيجابية"
+    "number_available_positive": "حقل الأعداد المتاحة يقبل فقط الأرقام الإيجابية",
+    "add_images": "رفع الصور"
   },
 
   "MESSAGES": {

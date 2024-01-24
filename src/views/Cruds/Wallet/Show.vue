@@ -17,7 +17,7 @@
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.operation_name')" v-model.trim="data.type"
             disabled />
 
-          <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.Current_balance')"
+          <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.moving_balance')"
             v-model.trim="data.Current_balance" disabled />
 
           <base-input col="6" type="text" :placeholder="$t('TABLES.Products.created_at')" v-model.trim="data.created_at"
@@ -71,7 +71,7 @@ export default {
 
         // wallet  info
 
-        this.data.orderNumber = res.data.data.order_id;
+        this.data.orderNumber = res.data.data.uuid;
         this.data.type = res.data.data.type;
         this.data.Current_balance = res.data.data.balance;
         this.data.created_at = res.data.data.cretedAt;

@@ -68,7 +68,7 @@
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
 
-            <a-tooltip placement="bottom" v-if="item.status !== 'finished'">
+            <a-tooltip placement="bottom" v-if="item.status !== 'finished' && item.status !== 'declined'">
               <template slot="title">
                 <span>{{ $t("PLACEHOLDERS.show_chat") }}</span>
               </template>

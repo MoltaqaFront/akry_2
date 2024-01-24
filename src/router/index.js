@@ -63,6 +63,10 @@ import CreateContact from "../views/Cruds/Contact/Create.vue";
 import TermsHome from "../views/Cruds/Terms/index.vue";
 // ============== End:: Terms Routes
 
+// ============== Start:: NotificationHome Routes
+import NotificationHome from "../views/Cruds/Notifications/index.vue";
+// ============== End:: NotificationHome Routes
+
 // ============== Start:: Terms Routes
 import AboutHome from "../views/Cruds/About/index.vue";
 // ============== End:: Terms Routes
@@ -70,6 +74,8 @@ import AboutHome from "../views/Cruds/About/index.vue";
 // ============== Start:: Privacy Routes
 import ChangePhone from "../views/Cruds/ChangePhone/index.vue";
 // ============== End:: Terms Routes
+
+import VerifyPhone from "../views/Cruds/VerifyPhoneCode/index.vue";
 
 // ============== Start:: Privacy Routes
 import PrivacyHome from "../views/Cruds/privacy/index.vue";
@@ -266,6 +272,17 @@ const routes = [
       },
       // End:: contact Routes Config
 
+      // Start:: notification Routes Config
+      {
+        path: "/notification",
+        name: "NotificationHome",
+        component: NotificationHome,
+        meta: {
+          middleware: [auth],
+        },
+      },
+      // End:: contact Routes Config
+
       // Start:: Orders Routes Config
       {
         path: "/orders",
@@ -377,6 +394,17 @@ const routes = [
         },
       },
       // End:: changePhone Routes Config
+
+      // Start:: verify-phone Routes Config
+      {
+        path: "/verify-phone",
+        name: "verify-phone",
+        component: VerifyPhone,
+        meta: {
+          middleware: [auth],
+        },
+      },
+      // End:: verify-phone Routes Config
 
       // Start:: about Routes Config
       {

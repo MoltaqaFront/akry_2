@@ -16,9 +16,11 @@
           </div>
 
           <!-- Start:: Image Upload Input -->
-          <base-image-upload-input col="12" :preSelectedImage="data.image.path" disabled
+          <base-image-upload-input col="12" :identifier="'image_client'" :preSelectedImage="data.image.path" disabled
             :placeholder="$t('PLACEHOLDERS.order_service')" />
           <!-- End:: Image Upload Input -->
+
+
 
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.name_requester')"
             v-model.trim="data.name_requester" disabled />
@@ -100,6 +102,8 @@
             <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.day_cost')" v-model.trim="data.day_cost"
               disabled />
 
+
+
           </div>
 
 
@@ -124,6 +128,37 @@
             disabled />
           <base-input col="6" type="text" :placeholder="$t('PLACEHOLDERS.total')" v-model.trim="data.total" disabled />
 
+          <RatingPreview v-if="data.status == 'finished'" :rate="+data.review_rate" :size="15" />
+
+          <base-input v-if="data.status == 'finished'" type="textarea" cols="4" rows="4"
+            :placeholder="$t('PLACEHOLDERS.comment')" v-model.trim="data.review_comment" disabled />
+
+          <div class="row" v-if="data.status == 'declined' && data.userState == 0">
+
+            <div class="col-lg-6 col-12">
+              <base-input type="text" :placeholder="$t('PLACEHOLDERS.who_reject')" v-model.trim="data.client_name"
+                disabled />
+            </div>
+
+            <div class="col-lg-6 col-12">
+              <base-input type="textarea" cols="4" rows="4" :placeholder="$t('PLACEHOLDERS.reject_reason')"
+                v-model.trim="data.userReason" disabled />
+            </div>
+
+          </div>
+          <div class="row" v-else-if="data.status == 'declined' && data.providerState == 0">
+            <div class="col-lg-6 col-12">
+              <base-input type="text" :placeholder="$t('PLACEHOLDERS.who_reject')" v-model.trim="data.provider_name"
+                disabled />
+            </div>
+
+            <div class="col-lg-6 col-12">
+              <base-input type="textarea" cols="4" rows="4" :placeholder="$t('PLACEHOLDERS.reject_reason')"
+                v-model.trim="data.providerReason" disabled />
+            </div>
+
+          </div>
+
         </div>
       </form>
     </div>
@@ -132,8 +167,13 @@
 </template>
 
 <script>
+import RatingPreview from "@/components/ui/RatingPreview.vue";
 export default {
   name: "CreateProduct",
+
+  components: {
+    RatingPreview,
+  },
 
   data() {
     return {
@@ -145,6 +185,8 @@ export default {
       // Start:: Data Collection To Send
 
       data: {
+
+        status: '',
 
         // order info
 
@@ -170,6 +212,8 @@ export default {
         address: '',
         service_type: '',
         // equipment
+        review_rate: '',
+        review_comment: '',
 
         equipment_image: {
           path: null,
@@ -193,7 +237,17 @@ export default {
         Starting_Point: '',
         Ending_Point: '',
         Cost_Return: '',
-        Cost_Kilogram: ''
+        Cost_Kilogram: '',
+
+        userReason: '',
+        userState: '',
+
+        client_name: '',
+
+        providerReason: '',
+        providerState: '',
+
+        provider_name: ''
 
       },
 
@@ -219,17 +273,20 @@ export default {
 
         // general
         this.data.order_id = res.data.data.id;
+        this.data.status = res.data.data.status;
         this.data.orderDate = res.data.data.createdAt;
         this.data.service_type = res.data.data.service.type;
         this.data.startDate = res.data.data.startDate;
         this.data.endDate = res.data.data.endDate;
         this.data.endAddress = res.data.data.endAddress.location;
-        this.data.tax = res.data.data.tax;
+        this.data.tax = res.data.data.taxApp;
         this.data.total = res.data.data.total;
         this.data.paymentCount = res.data.data.paymentCount;
         this.data.service_cost = res.data.data.serviceCost;
         this.data.first_pay = res.data.data.payment;
         this.data.quantity = res.data.data.serviceCount;
+        this.data.review_rate = res.data.data.review.rate;
+        this.data.review_comment = res.data.data.review.comment;
 
         // client
         this.data.image.path = res.data.data.client.image;
@@ -250,14 +307,16 @@ export default {
         this.data.Number_of_Returns = res.data.data.transportCount;
         this.data.Number_Carriers = res.data.data.isTransport;
 
-
-
-
         this.data.Starting_Point = res.data.data.startAddress.location;
         this.data.Ending_Point = res.data.data.endAddress.location;
 
+        this.data.userState = res.data.data.userState;
+        this.data.userReason = res.data.data.userReason;
+        this.data.client_name = res.data.data.client.name;
 
-
+        this.data.providerState = res.data.data.providerState;
+        this.data.providerReason = res.data.data.providerReason;
+        this.data.provider_name = res.data.data.provider.name;
 
 
       } catch (error) {

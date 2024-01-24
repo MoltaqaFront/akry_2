@@ -20,6 +20,10 @@
               <base-input type="email" :placeholder="$t('PLACEHOLDERS.email')" v-model.trim="data.email" required />
               <!-- End:: Email Input -->
 
+              <base-input type="text" :placeholder="$t('PLACEHOLDERS.iban')" v-model.trim="data.iban" required />
+
+              <base-input type="tel" :placeholder="$t('PLACEHOLDERS.phoneNumber')" v-model.trim="data.phone" disabled />
+
               <!-- Start:: Activate Edit Password Switch Input -->
               <div class="input_wrapper switch_wrapper my-5 ">
                 <v-switch color="green" :label="$t('PLACEHOLDERS.editPassword')" v-model="data.enableEditPassword"
@@ -99,7 +103,9 @@ export default {
           file: null,
         },
         name: null,
+        phone: '',
         email: null,
+        iban: '',
         enableEditPassword: false,
         old_password: null,
         password: null,
@@ -162,6 +168,8 @@ export default {
         this.data.image.path = res.data.data.avatar;
         this.data.name = res.data.data.name;
         this.data.email = res.data.data.email;
+        this.data.phone = res.data.data.phone;
+        this.data.iban = res.data.data.iban;
         // End:: Set Data
 
       } catch (error) {
@@ -249,6 +257,7 @@ export default {
       }
       REQUEST_DATA.append("name", this.data.name);
       REQUEST_DATA.append("email", this.data.email);
+      REQUEST_DATA.append("iban", this.data.iban);
       if (this.data.enableEditPassword) {
         REQUEST_DATA.append("old_password", this.data.old_password);
         REQUEST_DATA.append("new_password", this.data.password);

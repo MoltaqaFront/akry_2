@@ -140,7 +140,7 @@ export default {
     this.pusher = new Pusher('556f5cee277b4c7c22d7', {
       cluster: 'eu',
       encrypted: true,
-      authEndpoint: `https://akry.moltaqadev.com/api/pusher/auth`,
+      authEndpoint: `https://akryapps.com/api/pusher/auth`,
       auth: {
         headers: {
           Authorization: `Bearer ${localStorage.getItem('akry_dashboard_user_token')}`, // Use getItem() to retrieve the value

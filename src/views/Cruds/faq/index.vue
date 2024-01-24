@@ -50,10 +50,8 @@ export default {
           method: "GET",
           url: "faq",
         });
-        console.log("All Data ==>", res.data.body.data.data[0].id);
-        console.log("All Data ==>", res.data.body.data.data[0].question);
-        console.log("All Data ==>", res.data.body.data.data[0].answer);
-        this.faq = res.data.body.data.data;
+        console.log("All Data ==>", res.data.data.data);
+        this.faq = res.data.data.data;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
@@ -122,4 +120,5 @@ div#accordionFlushExample {
 .accordion-button::after {
   position: absolute;
   left: -10px !important;
-}</style>
+}
+</style>

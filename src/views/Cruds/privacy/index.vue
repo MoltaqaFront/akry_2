@@ -4,7 +4,7 @@
       <h3>{{ title }}</h3>
     </div>
     <div class="p-content">
-      <p>{{ content }}</p>
+      <p v-html="content"></p>
     </div>
     
   </div>

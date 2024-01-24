@@ -63,6 +63,17 @@
         </template>
         <!-- Start:: No Data State -->
 
+        <template v-slot:[`item.reason`]="{ item }">
+          <template>
+            <h6 class="text-danger" v-if="item.reason.length === 0"> {{ $t("TABLES.noData") }} </h6>
+            <div class="actions" v-else>
+              <button class="btn_show" @click="showReplayModal(item.reason)">
+                <i class="fal fa-eye"></i>
+              </button>
+            </div>
+          </template>
+        </template>
+
         <!-- Start:: Actions -->
         <template v-slot:[`item.actions`]="{ item }">
           <div class="actions">
@@ -78,6 +89,15 @@
           </div>
         </template>
         <!-- End:: Actions -->
+
+        <template v-slot:top>
+
+          <!-- Start:: Replay Modal -->
+          <description-modal v-if="dialogReplay" :modalIsOpen="dialogReplay" :modalDesc="selectedReplayTextToShow"
+            @toggleModal="dialogReplay = !dialogReplay" />
+          <!-- End:: Replay Modal -->
+
+        </template>
 
       </v-data-table>
       <!--  =========== End:: Data Table =========== -->
@@ -132,6 +152,22 @@ export default {
           name: this.$t("PLACEHOLDERS.withdrawAccept"),
           value: "withdrawAccept",
         },
+        {
+          id: 5,
+          name: this.$t("PLACEHOLDERS.pending"),
+          value: "pending",
+        },
+        {
+          id: 6,
+          name: this.$t("STATUS.accepted"),
+          value: "accepted",
+        },
+        {
+          id: 7,
+          name: this.$t("PLACEHOLDERS.declined"),
+          value: "declined",
+        },
+
       ];
     },
 
@@ -156,7 +192,7 @@ export default {
       tableHeaders: [
         {
           text: this.$t("TABLES.Orders.orderNumber"),
-          value: "id",
+          value: "uuid",
           sortable: false,
           align: "center",
         },
@@ -169,6 +205,12 @@ export default {
         {
           text: this.$t("PLACEHOLDERS.balance"),
           value: "balance",
+          sortable: false,
+          align: "center",
+        },
+        {
+          text: this.$t("PLACEHOLDERS.reason"),
+          value: "reason",
           sortable: false,
           align: "center",
         },
@@ -199,6 +241,14 @@ export default {
       // Start:: Page Permissions
       permissions: null,
       // Start:: Page Permissions
+
+      // Start:: Dialogs Control Data
+      dialogReplay: false,
+      selectedReplayTextToShow: "",
+      dialogSendReplay: false,
+      itemToSendReplay: null,
+      messageReplay: null,
+      // End:: Dialogs Control Data
 
       canWithdraw: '',
       balance: ''
@@ -255,14 +305,14 @@ export default {
           },
         });
         this.loading = false;
-        console.log("All Data ==>", res.data.data.records.data);
-        this.tableRows = res.data.data.records.data;
+        console.log("All Data ==>", res.data.data.records);
+        this.tableRows = res.data.data.records;
 
         this.canWithdraw = res.data.data.canWithdraw;
         this.balance = res.data.data.balance;
 
-        this.paginations.last_page = res.data.data.records.last_page;
-        this.paginations.items_per_page = res.data.data.records.per_page;
+        this.paginations.last_page = res.data.data.last_page;
+        this.paginations.items_per_page = res.data.data.per_page;
       } catch (error) {
         this.loading = false;
         console.log(error.response.data.message);
@@ -278,6 +328,8 @@ export default {
         });
         this.loading = false;
         this.$message.success(this.$t("MESSAGES.sentSuccessfully"));
+        this.setTableRows();
+        this.canWithdraw = false;
       } catch (error) {
         this.isWaitingRequest = false;
         this.$message.error(error.response.data.message);
@@ -288,9 +340,16 @@ export default {
     // ==================== Start:: Crud ====================
     // ===== Start:: Show
     showItem(item) {
-      this.$router.push({ path: `/wallet/show/${item.id}` });
+      this.$router.push({ path: `/wallet/show/${item.uuid}` });
     },
     // ===== End:: Show
+
+    // Start:: Control Modals
+    showReplayModal(replay) {
+      this.dialogReplay = true;
+      this.selectedReplayTextToShow = replay;
+    },
+    // End:: Control Modals
 
     // ==================== End:: Crud ====================
   },

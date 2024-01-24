@@ -107,23 +107,7 @@ export default {
 
   mounted() {
 
-    // console.log('Firebase cloud messaging object', firebase.messaging());
-
-    // get firebase token
-
     this.getFirebaseToken();
-
-    // navigator.serviceWorker.addEventListener('message', event => {
-    //   const receivedMessage = event.data;
-
-    //   this.receivedMessages.push(receivedMessage);
-
-    //   this.notificationTitle = event.data.notification.title;
-    //   this.notificationBody = event.data.notification.body;
-
-    //   console.log(receivedMessage)
-    //   // Update component state or display the received message in the UI
-    // });
 
   },
 
@@ -170,6 +154,7 @@ export default {
       REQUEST_DATA["phone"] = this.loginData.phone;
       REQUEST_DATA["password"] = this.loginData.password;
       REQUEST_DATA["role"] = this.getAuthenticatedUserData.role;
+      // REQUEST_DATA["device_token"] = this.device_token ? this.device_token : "mosbah";
       REQUEST_DATA["device_token"] = this.device_token ? this.device_token : "mosbah";
       // End:: Append Request Data (JSON)
 
@@ -207,6 +192,16 @@ export default {
         }
 
       } catch (error) {
+
+        if (error.response.data.code == 403) {
+          this.$router.replace("/OtpVerifyCode");
+          this.setAuthenticatedUserData({
+            phone: this.loginData.phone
+          });
+        }
+
+        // localStorage.setItem("verify_phone_otp_from_mobile_register", this.loginData.phone);
+        // this.$router.replace("/home");
         this.isWaitingRequest = false;
         this.$message.error(error.response.data.message);
       }
@@ -223,23 +218,15 @@ export default {
 
     // start firebase
 
-    getFirebaseToken() {
-      firebase.messaging().requestPermission()
-        .then(() => {
-          // Permission granted, retrieve the token
-          return firebase.messaging().getToken();
-        })
-        .then((token) => {
-          // Use the token as needed
-
-          this.device_token = token;
-
-          // console.log('FCM Token:', token);
-        })
-        .catch((error) => {
-          // Handle any errors that occur
-          console.error('Error:', error);
-        })
+    async getFirebaseToken() {
+      const messaging = firebase.messaging();
+      try {
+        const token = await messaging.getToken(); // Get the FCM token
+        this.device_token = token;
+        // console.log('FCM token:', token);
+      } catch (error) {
+        console.error('Error requesting permission/token:', error);
+      }
     },
 
   },

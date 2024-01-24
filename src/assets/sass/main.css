@@ -2622,7 +2622,7 @@ span.submit_btn {
   border-radius: 10px;
   color: var(--white_clr);
   transition: all 0.3s linear;
-  background-color: #f6a513;
+  background-color: #ACC29A;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -4187,6 +4187,10 @@ span.reset_btn {
 .tabs_wrapper .v-sheet .v-window .v-window__container .v-window-item .v-card {
   background: var(--theme_main_bg_clr) !important;
   padding: 25px;
+}
+
+.ant-scroll-number-only > p.ant-scroll-number-only-unit {
+  color: white !important;
 }
 
 .chart_card {
